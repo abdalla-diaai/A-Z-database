@@ -13,9 +13,19 @@ from .forms import *
 
 
 def index(request):
+    reagents = Reagent.objects.order_by("-created_at")
+    paginator = Paginator(reagents, 10)  
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
-        "reagents/index.html",
+        "reagents/index.html", {
+        "form": ReagentForm(),
+        "reagents": reagents,
+        "page_obj": page_obj,
+        "paginator": paginator, 
+        }
     )
 
 
@@ -71,3 +81,20 @@ def register(request):
     else:
         return render(request, "reagents/register.html")
 
+def add_reagent(request):
+    if request.method == "POST":
+        form = ReagentForm(request.POST)
+        if form.is_valid():
+            reagent = form.save(commit=False)
+            reagent.owner = request.user
+            reagent.save()
+            return HttpResponseRedirect(reverse("index"))
+    else:
+        form = ReagentForm(request.POST)
+    return render(
+        request,
+        "network/index.html",
+        {
+            "form": form,
+        },
+    )

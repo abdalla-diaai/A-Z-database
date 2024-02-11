@@ -16,7 +16,7 @@ class StylishForm(ModelForm):
 class ReagentForm(StylishForm):
     class Meta:
         model = Reagent
-        fields = ["reagent_name", "catalogue_no", "catalogue_url", "reagent_storage"]
+        fields = ["reagent_name", "catalogue_no", "reagent_url", "reagent_storage"]
         widgets = {
             "owner": forms.HiddenInput(),
         }
