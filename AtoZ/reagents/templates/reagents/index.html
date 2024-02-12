@@ -2,23 +2,44 @@
 {% load static %}
 
 {% block body %}
-<section id="reagent-section">
-    <h2>New Reagent</h2>
-    <form action="{% url 'add_reagent' %}" method="POST">
-        {% csrf_token %}
-        {{ reagent_form.as_p }}
-        <input id="post-button" class="btn btn-secondary btn-sm" type="submit" value="Save" name="save">
-    </form>
-</section>
-<hr>
-<section id="cells-section">
-    <h2>New Cell Line</h2>
-    <form action="{% url 'add_cell' %}" method="POST">
-        {% csrf_token %}
-        {{ cell_form.as_p }}
+{% if user.is_authenticated %}
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
+            role="tab" aria-controls="home-tab-pane" aria-selected="true">New Reagent</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
+            role="tab" aria-controls="profile-tab-pane" aria-selected="false">New Cell Line</button>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <form action="{% url 'add_reagent' %}" method="POST">
+            {% csrf_token %}
+            {{ reagent_form.as_p }}
+            <input id="post-button" class="btn btn-secondary btn-sm" type="submit" value="Save" name="save">
+        </form>
+    </div>
+    <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <form action="{% url 'add_cell' %}" method="POST">
+            {% csrf_token %}
+            {{ cell_form.as_p }}
 
-        <input id="post-button" class="btn btn-secondary btn-sm" type="submit" value="Save" name="save">
-    </form>
-</section>
+            <input id="post-button" class="btn btn-secondary btn-sm" type="submit" value="Save" name="save">
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="jumbotron">
+    <h1 class="display-4">Accelerate your research with our reagent search engine</h1>
+    <p class="lead">Search our database of antibodies, biochemicals, proteins, kits and cell lines & models.</p>
+    <hr class="my-4">
+    <p>User friendly interface, minimalist design.</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Reigster Here</a>
+    </p>
+</div>
+{% endif %}
 
 {% endblock %}
