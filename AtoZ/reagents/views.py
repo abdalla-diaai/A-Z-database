@@ -82,7 +82,7 @@ def add_reagent(request):
             reagent = form.save(commit=False)
             reagent.owner = request.user
             reagent.save()
-            return HttpResponseRedirect(reverse("view"))
+            return HttpResponseRedirect(reverse("view_reagents"))
     else:
         form = ReagentForm(request.POST)
     return render(
