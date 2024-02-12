@@ -73,6 +73,7 @@ def register(request):
     else:
         return render(request, "reagents/register.html")
 
+# add new reagent
 def add_reagent(request):
     if request.method == "POST":
         form = ReagentForm(request.POST)
@@ -91,7 +92,7 @@ def add_reagent(request):
         },
     )
 
-
+# view all reagents
 @login_required
 def view(request):
     posts = Reagent.objects.all()
@@ -106,8 +107,7 @@ def view(request):
          }
     )
 
-
-# delete a listing
+# delete a reagent
 @login_required
 def delete(request, reagent_id):
     reagent = Reagent.objects.get(pk=reagent_id)

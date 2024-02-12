@@ -19,9 +19,7 @@
             </tr>
         </thead>
         <tbody>
-
             {% for reagent in page_obj %}
-
             <tr>
                 <th scope="row">{{ reagent.id }}</th>
                 <td>{{ reagent.reagent_name }}</td>
@@ -31,9 +29,7 @@
                 <td> {{ reagent.created }}</td>
                 <td><a href="{{ reagent.reagent_url }}">Click</a></td>
                 <td><a href="{% url 'delete' reagent.id %}">Delete</a></td>
-
             </tr>
-
             {% endfor %}
         </tbody>
     </table>
