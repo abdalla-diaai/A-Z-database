@@ -13,18 +13,10 @@ from .forms import *
 
 
 def index(request):
-    reagents = Reagent.objects.order_by("-created_at")
-    paginator = Paginator(reagents, 10)  
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-
     return render(
         request,
         "reagents/index.html", {
         "form": ReagentForm(),
-        "reagents": reagents,
-        "page_obj": page_obj,
-        "paginator": paginator, 
         }
     )
 
@@ -88,13 +80,36 @@ def add_reagent(request):
             reagent = form.save(commit=False)
             reagent.owner = request.user
             reagent.save()
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("view"))
     else:
         form = ReagentForm(request.POST)
     return render(
         request,
-        "network/index.html",
+        "reagents/index.html",
         {
             "form": form,
         },
     )
+
+
+@login_required
+def view(request):
+    posts = Reagent.objects.all()
+    paginator = Paginator(posts, 10)  
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(
+        request,
+        "reagents/reagents.html",
+        {"page_obj": page_obj,
+         "paginator": paginator, 
+         }
+    )
+
+
+# delete a listing
+@login_required
+def delete(request, reagent_id):
+    reagent = Reagent.objects.get(pk=reagent_id)
+    reagent.delete()
+    return HttpResponseRedirect(reverse("view"))
