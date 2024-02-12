@@ -35,3 +35,13 @@ body {
 #reagent-form {
     border-inline-end: 1px solid black;
 }
+
+/* Add this to your CSS stylesheet or in a <style> tag in the HTML file */
+footer {
+    position: fixed; /* or use position: absolute; */
+    bottom: 0;
+    margin-block-end: 0;
+    width: 100%;
+    background-color: #f8f9fa; /* Set the background color if needed */
+    padding: 10px 0; /* Add padding for styling */
+}
