@@ -15,7 +15,9 @@ from .forms import *
 def index(request):
     return render(
         request,
-        "reagents/index.html",
+        "reagents/index.html", {
+        "form": ReagentForm(),
+        }
     )
 
 
@@ -71,3 +73,43 @@ def register(request):
     else:
         return render(request, "reagents/register.html")
 
+# add new reagent
+def add_reagent(request):
+    if request.method == "POST":
+        form = ReagentForm(request.POST)
+        if form.is_valid():
+            reagent = form.save(commit=False)
+            reagent.owner = request.user
+            reagent.save()
+            return HttpResponseRedirect(reverse("view"))
+    else:
+        form = ReagentForm(request.POST)
+    return render(
+        request,
+        "reagents/index.html",
+        {
+            "form": form,
+        },
+    )
+
+# view all reagents
+@login_required
+def view(request):
+    posts = Reagent.objects.all()
+    paginator = Paginator(posts, 10)  
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(
+        request,
+        "reagents/reagents.html",
+        {"page_obj": page_obj,
+         "paginator": paginator, 
+         }
+    )
+
+# delete a reagent
+@login_required
+def delete(request, reagent_id):
+    reagent = Reagent.objects.get(pk=reagent_id)
+    reagent.delete()
+    return HttpResponseRedirect(reverse("view"))
