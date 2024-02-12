@@ -1,5 +1,4 @@
 from django.contrib.auth.models import AbstractUser
-from django import forms
 from django.db import models
 from django.conf import settings
 
@@ -26,6 +25,7 @@ class Reagent(TimeStampedModel):
     reagent_url = models.CharField(max_length=300, blank=True, null=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     reagent_storage = models.CharField(max_length=10, blank=True, null=True)
+    
     def __str__(self) -> str:
         return f"{self.owner} {self.reagent_name} {self.catalogue_no} {self.reagent_storage} {self.reagent_url}"
    
@@ -37,3 +37,14 @@ class Reagent(TimeStampedModel):
             "url": self.reagent_url,
             "storage": self.reagent_storage
         }
+
+class CellLine(TimeStampedModel):
+    CHOICES = [("Wildtype", True), ("Modified", False)]
+    created = TimeStampedModel.created_at
+    cell_name = models.CharField(max_length=300, blank=True, null=True)
+    media = models.CharField(max_length=300, blank=True, null=True)
+    genotype = models.CharField(max_length=30, choices=CHOICES, default=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    storage_position = models.CharField(max_length=10, blank=True, null=True)
+    def __str__(self) -> str:
+        return f"{self.owner} {self.cell_name} {self.media} {self.genotype} {self.storage_position}"

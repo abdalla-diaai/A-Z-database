@@ -16,7 +16,8 @@ def index(request):
     return render(
         request,
         "reagents/index.html", {
-        "form": ReagentForm(),
+        "reagent_form": ReagentForm(),
+        "cell_form": CellsForm()
         }
     )
 
@@ -94,9 +95,9 @@ def add_reagent(request):
 
 # view all reagents
 @login_required
-def view(request):
-    posts = Reagent.objects.all()
-    paginator = Paginator(posts, 10)  
+def view_reagents(request):
+    reagents = Reagent.objects.all()
+    paginator = Paginator(reagents, 10)  
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
@@ -109,7 +110,51 @@ def view(request):
 
 # delete a reagent
 @login_required
-def delete(request, reagent_id):
+def delete_reagent(request, reagent_id):
     reagent = Reagent.objects.get(pk=reagent_id)
     reagent.delete()
-    return HttpResponseRedirect(reverse("view"))
+    return HttpResponseRedirect(reverse("view_reagents"))
+
+
+
+# add new reagent
+def add_cell(request):
+    if request.method == "POST":
+        form = CellsForm(request.POST)
+        if form.is_valid():
+            reagent = form.save(commit=False)
+            reagent.owner = request.user
+            reagent.save()
+            return HttpResponseRedirect(reverse("view_cells"))
+    else:
+        form = CellsForm(request.POST)
+    return render(
+        request,
+        "reagents/index.html",
+        {
+            "form": form,
+        },
+    )
+
+# view all reagents
+@login_required
+def view_cells(request):
+    cells = CellLine.objects.all()
+    paginator = Paginator(cells, 10)  
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(
+        request,
+        "reagents/cells.html",
+        {"page_obj": page_obj,
+         "paginator": paginator, 
+         }
+    )
+
+
+# delete a reagent
+@login_required
+def delete_cell(request, cell_id):
+    cell = CellLine.objects.get(pk=cell_id)
+    cell.delete()
+    return HttpResponseRedirect(reverse("view_cells"))
