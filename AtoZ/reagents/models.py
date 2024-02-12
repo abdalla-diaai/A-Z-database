@@ -37,3 +37,13 @@ class Reagent(TimeStampedModel):
             "url": self.reagent_url,
             "storage": self.reagent_storage
         }
+
+class CellLine(TimeStampedModel):
+    created = TimeStampedModel.created_at
+    cell_name = models.CharField(max_length=300, blank=True, null=True)
+    media = models.CharField(max_length=300, blank=True, null=True)
+    wildtype = models.CharField(max_length=300, blank=True, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    storage_position = models.CharField(max_length=10, blank=True, null=True)
+    def __str__(self) -> str:
+        return f"{self.owner} {self.cell_name} {self.media} {self.wildtype} {self.storage_position}"
