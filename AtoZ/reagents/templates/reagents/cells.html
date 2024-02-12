@@ -9,26 +9,26 @@
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Reagent</th>
-                <th scope="col">Catalogue Number</th>
-                <th scope="col">Storage</th>
-                <th scope="col">Ordered By</th>
+                <th scope="col">Cell Line</th>
+                <th scope="col">Culture Media</th>
+                <th scope="col">Genotype</th>
+                <th scope="col">Owner</th>
                 <th scope="col">Created At</th>
-                <th scope="col">More Details</th>
+                <th scope="col">Location</th>
                 <th scope="col">Delete</th>
             </tr>
         </thead>
         <tbody>
-            {% for reagent in page_obj %}
+            {% for cell in page_obj %}
             <tr>
-                <th scope="row">{{ reagent.id }}</th>
-                <td>{{ reagent.reagent_name }}</td>
-                <td>{{ reagent.catalogue_no }}</td>
-                <td>{{ reagent.reagent_storage }}ºC</td>
-                <td>{{ reagent.owner }}</td>
-                <td> {{ reagent.created }}</td>
-                <td><a href="{{ reagent.reagent_url }}">Click</a></td>
-                <td><a href="{% url 'delete_reagent' reagent.id %}">Delete</a></td>
+                <th scope="row">{{ cell.id }}</th>
+                <td>{{ cell.cell_name }}</td>
+                <td>{{ cell.media }}</td>
+                <td>{{ cell.genotype }}</td>
+                <td>{{ cell.owner }}</td>
+                <td> {{ cell.created }}</td>
+                <td>{{ cell.storage_position }}</td>
+                <td><a href="{% url 'delete_cell' cell.id %}">Delete</a></td>
             </tr>
             {% endfor %}
         </tbody>
