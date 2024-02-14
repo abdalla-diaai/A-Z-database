@@ -1,5 +1,6 @@
-html, body {
-    min-height: 100%;
+main {
+    position: relative;
+    min-height: 100vh;
 }
 .navbar {
     margin: 20px;
@@ -42,10 +43,10 @@ body {
 a {
     text-decoration: none;
 }
-.footer {
-    position: relative;
+
+footer {
+    position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: #f8f9fa;
-    padding: 10px 0;
+    height: 2.5rem; 
 }
