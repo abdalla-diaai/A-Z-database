@@ -28,7 +28,7 @@
                 <td>{{ cell.owner }}</td>
                 <td> {{ cell.created }}</td>
                 <td>{{ cell.storage_position }}</td>
-                <td><a href="{% url 'delete_cell' cell.id %}">Delete</a></td>
+                <td><a id="delete" href="{% url 'delete_cell' cell.id %}">X</a></td>
             </tr>
             {% endfor %}
         </tbody>

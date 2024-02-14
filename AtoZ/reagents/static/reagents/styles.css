@@ -30,6 +30,13 @@ form {
     padding: 20px;
 }
 
+#delete {
+    color: red;
+}
+
+#delete:hover {
+    text-decoration: underline;
+}
 body {
     font-family: "Ubuntu", sans-serif;
     font-weight: 300;

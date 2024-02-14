@@ -49,3 +49,5 @@ class CellLine(TimeStampedModel):
     storage_position = models.CharField(max_length=10, blank=True, null=True)
     def __str__(self) -> str:
         return f"{self.owner} {self.cell_name} {self.media} {self.genotype} {self.storage_position}"
+    
+
