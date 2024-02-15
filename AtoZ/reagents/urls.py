@@ -13,4 +13,5 @@ urlpatterns = [
     path("view_cells", views.view_cells, name="view_cells"),
     path("delete_reagent/<int:reagent_id>", views.delete_reagent, name="delete_reagent"),
     path("delete_cell/<int:cell_id>", views.delete_cell, name="delete_cell"),
+    path("search", views.search, name="search"),
 ]

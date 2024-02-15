@@ -30,6 +30,10 @@ form {
     padding: 20px;
 }
 
+#id_search {
+    margin-inline-end: 10px;
+}
+
 #delete:hover {
     color: red;
 }

@@ -31,3 +31,12 @@ class CellsForm(StylishForm):
             "owner": forms.HiddenInput(),
         }
       
+
+# form for search
+class NewSearch(forms.Form):
+    search = forms.CharField(
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search Database", "class": "form-control"}
+        ),
+    )

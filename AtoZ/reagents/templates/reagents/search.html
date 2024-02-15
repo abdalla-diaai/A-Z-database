@@ -1,4 +1,6 @@
-{% extends "encyclopedia/layout.html" %}
+{% extends "reagents/layout.html" %}
+{% load static %}
+
 
 {% block title %}
     Search Results 
@@ -7,8 +9,9 @@
 {% block body %}
     <h2>Results</h2>
     <ul>
-        {% for match in close_match %}
-            <li><a href="{% url 'encyclopedia:view' match %}">{{ match }}</a></li>
+        {{ exact_match }}
+        {% for match in close_match.all %}
+            <li>{{ match.reagent_name }}</li>
         {% endfor %}
     </ul>
     <div>

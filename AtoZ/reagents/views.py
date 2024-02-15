@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from .models import User
 from .forms import *
+from django.db.models import Q
 
 
 def index(request):
@@ -17,7 +18,8 @@ def index(request):
         request,
         "reagents/index.html", {
         "reagent_form": ReagentForm(),
-        "cell_form": CellsForm()
+        "cell_form": CellsForm(),
+        "search_form": NewSearch()
         }
     )
 
@@ -103,8 +105,11 @@ def view_reagents(request):
     return render(
         request,
         "reagents/reagents.html",
-        {"page_obj": page_obj,
-         "paginator": paginator, 
+        {
+        "page_obj": page_obj,
+        "paginator": paginator,
+        "search_form": NewSearch()
+
          }
     )
 
@@ -114,8 +119,6 @@ def delete_reagent(request, reagent_id):
     reagent = Reagent.objects.get(pk=reagent_id)
     reagent.delete()
     return HttpResponseRedirect(reverse("view_reagents"))
-
-
 
 # add new reagent
 def add_cell(request):
@@ -146,11 +149,12 @@ def view_cells(request):
     return render(
         request,
         "reagents/cells.html",
-        {"page_obj": page_obj,
-         "paginator": paginator, 
+        {
+        "page_obj": page_obj,
+        "paginator": paginator,
+        "search_form": NewSearch()
          }
     )
-
 
 # delete a reagent
 @login_required
@@ -159,29 +163,39 @@ def delete_cell(request, cell_id):
     cell.delete()
     return HttpResponseRedirect(reverse("view_cells"))
 
-
+@login_required
 def search(request):
     """function to perform search to take the user to the page"""
-
+    reagents = Reagent.objects.all()
     if request.method == "POST":
         form = NewSearch(request.POST)
         if form.is_valid():
             search = form.cleaned_data["search"]
-            entries_list = util.list_entries()
-            close_match = [x for x in entries_list if re.search(search, x, re.IGNORECASE)]
-            for entry in entries_list:
-                if search.casefold() == entry.casefold():
-                    return HttpResponseRedirect(reverse("encyclopedia:view", args=[entry]))
+            qset = Q()
+            for term in search.split():
+                qset |= Q(reagent_name__contains=term)
+
+            close_match = Reagent.objects.filter(qset)
+            for reagent in reagents:
+                if search.casefold() == reagent.reagent_name.casefold():
+                    messages.success(request, 'Match Found!.')
+
+                    return render(
+                request,
+                "reagents/search.html",
+                {"exact_match": reagent.reagent_name, "search_form": NewSearch()},
+            )
             if close_match:
+                messages.success(request, 'Match Found!.')
                 return render(
                 request,
-                "encyclopedia/search.html",
+                "reagents/search.html",
                 {"close_match": close_match, "search_form": NewSearch()},
             )
             else:
                 messages.success(request, 'No results found.')
                 return render(
                     request,
-                    "encyclopedia/search.html", {"search_form": NewSearch()},
+                    "reagents/search.html", {"search_form": NewSearch()},
                 )
-    return render(request, "encyclopedia/index.html", {"entries": util.list_entries()})
+    return render(request, "reagents/index.html", {"reagents": reagents})
