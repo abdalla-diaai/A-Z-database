@@ -158,3 +158,30 @@ def delete_cell(request, cell_id):
     cell = CellLine.objects.get(pk=cell_id)
     cell.delete()
     return HttpResponseRedirect(reverse("view_cells"))
+
+
+def search(request):
+    """function to perform search to take the user to the page"""
+
+    if request.method == "POST":
+        form = NewSearch(request.POST)
+        if form.is_valid():
+            search = form.cleaned_data["search"]
+            entries_list = util.list_entries()
+            close_match = [x for x in entries_list if re.search(search, x, re.IGNORECASE)]
+            for entry in entries_list:
+                if search.casefold() == entry.casefold():
+                    return HttpResponseRedirect(reverse("encyclopedia:view", args=[entry]))
+            if close_match:
+                return render(
+                request,
+                "encyclopedia/search.html",
+                {"close_match": close_match, "search_form": NewSearch()},
+            )
+            else:
+                messages.success(request, 'No results found.')
+                return render(
+                    request,
+                    "encyclopedia/search.html", {"search_form": NewSearch()},
+                )
+    return render(request, "encyclopedia/index.html", {"entries": util.list_entries()})

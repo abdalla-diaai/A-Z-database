@@ -30,12 +30,8 @@ form {
     padding: 20px;
 }
 
-#delete {
-    color: red;
-}
-
 #delete:hover {
-    text-decoration: underline;
+    color: red;
 }
 body {
     font-family: "Ubuntu", sans-serif;
@@ -49,6 +45,7 @@ body {
 
 a {
     text-decoration: none;
+    color: black;
 }
 
 footer {

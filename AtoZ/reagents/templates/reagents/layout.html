@@ -20,14 +20,17 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+
         <a class="navbar-brand" href="{% url 'index' %}">AtoZ Database</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
 
                 {% if user.is_authenticated %}
                 <li class="nav-item">
@@ -48,6 +51,11 @@
                 </li>
                 {% endif %}
             </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
         </div>
     </nav>
     <main>
@@ -75,11 +83,11 @@
                         <h6>Address</h6>
                     </div>
                     <address>
-                        <i class="fa-solid fa-location-dot"></i> 16 Longmore Avenue
+                        <i class="fa-solid fa-location-dot"></i> 4 Privet Drive, Little Whinging
                         <br>
-                        London
+                        Surrey
                         <br>
-                        EN4 8AF
+                        WD25 7LR
                         <br>
                         United Kingdom
                     </address>
