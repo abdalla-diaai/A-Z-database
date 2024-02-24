@@ -12,6 +12,10 @@
         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
             role="tab" aria-controls="profile-tab-pane" aria-selected="false">New Cell Line</button>
     </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="calculator-tab" data-bs-toggle="tab" data-bs-target="#calculator-tab-pane" type="button"
+            role="tab" aria-controls="calculator-tab-pane" aria-selected="false">Scientific Calculator</button>
+    </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -25,9 +29,28 @@
         <form action="{% url 'add_cell' %}" method="POST">
             {% csrf_token %}
             {{ cell_form.as_p }}
-
             <input id="post-button" class="btn btn-secondary btn-sm" type="submit" value="Save" name="save">
         </form>
+    </div>
+    <div class="tab-pane fade" id="calculator-tab-pane" role="tabpanel" aria-labelledby="#calculator-tab-pane" tabindex="0">
+        <div>
+            <label class="form-label">Number of Reactions</label>
+            <input type="number" class="form-control" id="tentacles" name="tentacles" min="1" max="50" />
+            <input type="text" class="form-control" id="form-labels" placeholder="PCR mastermix components seperated by comma.">
+            <button id="add-field" class="btn btn-secondary btn-sm">Add Field</button>
+        </div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Reagent</th>
+                <th scope="col">Volume (µL)</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+        <span id="perRxn"></span>
     </div>
 </div>
 {% else %}
@@ -42,5 +65,7 @@
 </div>
 {% endif %}
 
-
+{% block script %}
+<script src="{% static 'reagents/script.js' %}"></script>
+{% endblock %}
 {% endblock %}

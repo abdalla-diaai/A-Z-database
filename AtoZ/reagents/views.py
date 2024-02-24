@@ -167,6 +167,7 @@ def delete_cell(request, cell_id):
 def search(request):
     """function to perform search to take the user to the page"""
     reagents = Reagent.objects.all()
+    cells = CellLine.objects.all()
     if request.method == "POST":
         form = NewSearch(request.POST)
         if form.is_valid():
