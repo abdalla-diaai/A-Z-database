@@ -14,6 +14,9 @@ var toughmix = [
     ['Water', 10]
 ]
 
+var other = $('#form-labels').val().split(',');
+console.log(other);
+
 var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
@@ -32,12 +35,27 @@ function btnClick(polName, polList) {
             $('#perRxn').text('Volume per reaction: 19 µL.');
         } else if (polName === 'toughmix') {
             $('#perRxn').text('Volume per reaction: 24 µL.');
-        }
+        };
+    });
+};
+
+
+
+function otherClick() {
+    $('#other').on('click', function () {
+        $("#table-body").empty();
+        var other = $('#form-labels').val().split(',');
+        console.log(other)
+        for (let i = 0; i < other.length; i++) {
+            let tableRow = $("<tr/>");
+            tableRow.append($("<td>").text(i + 1));
+            tableRow.append($("<td>").text(other[i]));
+            // tableRow.append($("<td>").text(other[i][1] * rxNum));
+            $("#table-body").append(tableRow);
+        };
     });
 };
 
 btnClick('phusion', phusion);
 btnClick('toughmix', toughmix);
-
-
-
+otherClick();
