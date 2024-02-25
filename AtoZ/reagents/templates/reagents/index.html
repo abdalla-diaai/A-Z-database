@@ -33,11 +33,18 @@
         </form>
     </div>
     <div class="tab-pane fade" id="calculator-tab-pane" role="tabpanel" aria-labelledby="#calculator-tab-pane" tabindex="0">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+            <button id="phusion"  type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-custom-class="custom-tooltip" data-bs-title="Phusion Flash High-Fidelity PCR Master Mix. Catalog number: F548L.">Phusion</button>
+            <button id="toughmix" type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-custom-class="custom-tooltip" data-bs-title="repliQa HiFi ToughMix. Catalog number: 95200-100.">ToughMix</button>
+            <button id="other" type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top"
+            data-bs-custom-class="custom-tooltip" data-bs-title="Any other polymerase. Write PCR components below seperated by comma.">Other</button>
+          </div>
         <div>
             <label class="form-label">Number of Reactions</label>
             <input type="number" class="form-control" id="tentacles" name="tentacles" min="1" max="50" />
             <input type="text" class="form-control" id="form-labels" placeholder="PCR mastermix components seperated by comma.">
-            <button id="add-field" class="btn btn-secondary btn-sm">Add Field</button>
         </div>
         <table class="table">
             <thead>
