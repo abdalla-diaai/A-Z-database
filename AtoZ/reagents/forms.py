@@ -16,7 +16,7 @@ class StylishForm(ModelForm):
 class ReagentForm(StylishForm):
     class Meta:
         model = Reagent
-        fields = ["reagent_name", "catalogue_no", "reagent_url", "reagent_storage"]
+        fields = ["reagent_name", "catalogue_no", "reagent_url", "reagent_supplier", "reagent_storage"]
         widgets = {
             "owner": forms.HiddenInput(),
         }
@@ -31,3 +31,14 @@ class CellsForm(StylishForm):
             "owner": forms.HiddenInput(),
         }
       
+
+# form for search
+class NewSearch(forms.Form):
+    CHOICES = [("cells", "Cells"), ("reagents", "Reagents")]
+    search = forms.CharField(
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search Database", "class": "form-control"}
+        ),
+    )
+    database_to_search = models.CharField(max_length=30, choices=CHOICES, default="Reagents")

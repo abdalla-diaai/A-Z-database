@@ -1,0 +1,24 @@
+{% extends "reagents/layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    Search Results 
+{% endblock %}
+
+{% block body %}
+    <h2>Results</h2>
+    <ul>
+        {{ exact_match }}
+        {% for match in close_match.all %}
+            <li>{{ match.reagent_name }}</li>
+        {% endfor %}
+    </ul>
+    <div>
+        {% if messages %}
+            {% for message in messages %}
+                <em {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </em>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}

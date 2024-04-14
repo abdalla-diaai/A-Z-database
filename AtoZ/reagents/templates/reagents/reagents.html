@@ -14,7 +14,7 @@
                 <th scope="col">Storage</th>
                 <th scope="col">Ordered By</th>
                 <th scope="col">Created At</th>
-                <th scope="col">More Details</th>
+                <th scope="col">Supplier</th>
                 <th scope="col">Delete</th>
             </tr>
         </thead>
@@ -27,8 +27,8 @@
                 <td>{{ reagent.reagent_storage }}ºC</td>
                 <td>{{ reagent.owner }}</td>
                 <td> {{ reagent.created }}</td>
-                <td><a href="{{ reagent.reagent_url }}">Click</a></td>
-                <td><a href="{% url 'delete_reagent' reagent.id %}">Delete</a></td>
+                <td><a href="{{ reagent.reagent_url }}">{{ reagent.reagent_supplier }}</a></td>
+                <td><a id="delete" href="{% url 'delete_reagent' reagent.id %}">X</a></td>
             </tr>
             {% endfor %}
         </tbody>
