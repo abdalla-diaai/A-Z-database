@@ -30,9 +30,6 @@ form {
     padding: 20px;
 }
 
-.form-control {
-    max-width: 50%;
-}
 #id_search {
     margin-inline-end: 10px;
 }

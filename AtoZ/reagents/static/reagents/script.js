@@ -1,25 +1,3 @@
-var phusion = [
-    ['Forward Primer', 1],
-    ['Reverse Primer', 1],
-    ['2X Phusion Flash PCR Master Mix', 10],
-    ['Template DNA', 1],
-    ['Water', 7]
-]
-
-var toughmix = [
-    ['Forward Primer', 0.75],
-    ['Reverse Primer', 0.75],
-    ['ToughMix PCR Master Mix', 12.5],
-    ['Template DNA', 1],
-    ['Water', 10]
-]
-
-var other = $('#form-labels').val().split(',');
-console.log(other);
-
-var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
 function btnClick(polName, polList) {
     $(`#${polName}`).on('click', function () {
         $("#table-body").empty();
@@ -44,18 +22,42 @@ function btnClick(polName, polList) {
 function otherClick() {
     $('#other').on('click', function () {
         $("#table-body").empty();
-        var other = $('#form-labels').val().split(',');
-        console.log(other)
+        const rxNum = $('#tentacles').val();    
+        const other = $('#form-labels').val().split(',');
+        let otherVol;
         for (let i = 0; i < other.length; i++) {
             let tableRow = $("<tr/>");
             tableRow.append($("<td>").text(i + 1));
-            tableRow.append($("<td>").text(other[i]));
-            // tableRow.append($("<td>").text(other[i][1] * rxNum));
+            otherVol = other[i].split(' ');
+            console.log(otherVol);
+            tableRow.append($("<td>").text(otherVol[0]));
+            tableRow.append($("<td>").text(parseInt(otherVol[1]) * rxNum));
             $("#table-body").append(tableRow);
         };
     });
 };
 
-btnClick('phusion', phusion);
-btnClick('toughmix', toughmix);
+const tooltipTriggerList = $('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+document.addEventListener('DOMContentLoaded', () => {
+    const phusionList = [
+        ['Forward Primer', 1],
+        ['Reverse Primer', 1],
+        ['2X Phusion Flash PCR Master Mix', 10],
+        ['Template DNA', 1],
+        ['Water', 7]
+    ]
+    
+    const toughmixList = [
+        ['Forward Primer', 0.75],
+        ['Reverse Primer', 0.75],
+        ['ToughMix PCR Master Mix', 12.5],
+        ['Template DNA', 1],
+        ['Water', 10]
+    ]
+
+btnClick('phusion', phusionList);
+btnClick('toughmix', toughmixList);
 otherClick();
+});

@@ -11,16 +11,20 @@ from django.core.paginator import Paginator
 from .models import User
 from .forms import *
 from django.db.models import Q
+from . import util
+import markdown2
 
 
 def index(request):
     return render(
         request,
-        "reagents/index.html", {
-        "reagent_form": ReagentForm(),
-        "cell_form": CellsForm(),
-        "search_form": NewSearch()
-        }
+        "reagents/index.html",
+        {
+            "reagent_form": ReagentForm(),
+            "cell_form": CellsForm(),
+            "search_form": NewSearch(),
+            "entries": util.list_entries(),
+        },
     )
 
 
@@ -69,12 +73,15 @@ def register(request):
             user.save()
         except IntegrityError:
             return render(
-                request, "reagents/register.html", {"message": "Username already taken."}
+                request,
+                "reagents/register.html",
+                {"message": "Username already taken."},
             )
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "reagents/register.html")
+
 
 # add new reagent
 def add_reagent(request):
@@ -95,23 +102,20 @@ def add_reagent(request):
         },
     )
 
+
 # view all reagents
 @login_required
 def view_reagents(request):
     reagents = Reagent.objects.all()
-    paginator = Paginator(reagents, 10)  
+    paginator = Paginator(reagents, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
         request,
         "reagents/reagents.html",
-        {
-        "page_obj": page_obj,
-        "paginator": paginator,
-        "search_form": NewSearch()
-
-         }
+        {"page_obj": page_obj, "paginator": paginator, "search_form": NewSearch()},
     )
+
 
 # delete a reagent
 @login_required
@@ -119,6 +123,7 @@ def delete_reagent(request, reagent_id):
     reagent = Reagent.objects.get(pk=reagent_id)
     reagent.delete()
     return HttpResponseRedirect(reverse("view_reagents"))
+
 
 # add new reagent
 def add_cell(request):
@@ -139,22 +144,20 @@ def add_cell(request):
         },
     )
 
+
 # view all reagents
 @login_required
 def view_cells(request):
     cells = CellLine.objects.all()
-    paginator = Paginator(cells, 10)  
+    paginator = Paginator(cells, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
         request,
         "reagents/cells.html",
-        {
-        "page_obj": page_obj,
-        "paginator": paginator,
-        "search_form": NewSearch()
-         }
+        {"page_obj": page_obj, "paginator": paginator, "search_form": NewSearch()},
     )
+
 
 # delete a reagent
 @login_required
@@ -162,6 +165,7 @@ def delete_cell(request, cell_id):
     cell = CellLine.objects.get(pk=cell_id)
     cell.delete()
     return HttpResponseRedirect(reverse("view_cells"))
+
 
 @login_required
 def search(request):
@@ -179,24 +183,40 @@ def search(request):
             close_match = Reagent.objects.filter(qset)
             for reagent in reagents:
                 if search.casefold() == reagent.reagent_name.casefold():
-                    messages.success(request, 'Match Found!.')
+                    messages.success(request, "Match Found!.")
 
                     return render(
-                request,
-                "reagents/search.html",
-                {"exact_match": reagent.reagent_name, "search_form": NewSearch()},
-            )
+                        request,
+                        "reagents/search.html",
+                        {
+                            "exact_match": reagent.reagent_name,
+                            "search_form": NewSearch(),
+                        },
+                    )
             if close_match:
-                messages.success(request, 'Match Found!.')
-                return render(
-                request,
-                "reagents/search.html",
-                {"close_match": close_match, "search_form": NewSearch()},
-            )
-            else:
-                messages.success(request, 'No results found.')
+                messages.success(request, "Match Found!.")
                 return render(
                     request,
-                    "reagents/search.html", {"search_form": NewSearch()},
+                    "reagents/search.html",
+                    {"close_match": close_match, "search_form": NewSearch()},
+                )
+            else:
+                messages.success(request, "No results found.")
+                return render(
+                    request,
+                    "reagents/search.html",
+                    {"search_form": NewSearch()},
                 )
     return render(request, "reagents/index.html", {"reagents": reagents})
+
+
+def view_protocol(request, entry):
+    """function to render pages and convert markdown to html pages."""
+
+    markdowner = markdown2.Markdown()
+    page = util.get_entry(entry)
+    return render(
+        request,
+        "reagents/protocol.html",
+        {"entry_page": markdowner.convert(page), "title": entry},
+    )

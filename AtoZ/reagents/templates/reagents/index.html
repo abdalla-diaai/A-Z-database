@@ -20,6 +20,10 @@
         <button class="nav-link" id="crispr-tab" data-bs-toggle="tab" data-bs-target="#crispr-tab-pane" type="button"
             role="tab" aria-controls="crispr-tab-pane" aria-selected="false">CRISPR Calculator</button>
     </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="protocol-tab" data-bs-toggle="tab" data-bs-target="#protocol-tab-pane" type="button"
+            role="tab" aria-controls="protocol-tab-pane" aria-selected="false">Protocols</button>
+    </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -39,16 +43,21 @@
     <div class="tab-pane fade" id="calculator-tab-pane" role="tabpanel" aria-labelledby="#calculator-tab-pane" tabindex="0">
         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
             <button id="phusion"  type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-custom-class="custom-tooltip" data-bs-title="Phusion Flash High-Fidelity PCR Master Mix. Catalog number: F548L.">Phusion</button>
+            data-bs-custom-class="custom-tooltip" data-bs-title="Phusion Flash High-Fidelity PCR Master Mix. Catalog number: F548L. Total volume 20µL.">Phusion</button>
             <button id="toughmix" type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-custom-class="custom-tooltip" data-bs-title="repliQa HiFi ToughMix. Catalog number: 95200-100.">ToughMix</button>
+            data-bs-custom-class="custom-tooltip" data-bs-title="repliQa HiFi ToughMix. Catalog number: 95200-100. Total volume 25µL.">ToughMix</button>
             <button id="other" type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top"
             data-bs-custom-class="custom-tooltip" data-bs-title="Any other polymerase. Write PCR components below seperated by comma.">Other</button>
           </div>
-        <div>
-            <label class="form-label">Number of Reactions</label>
-            <input type="number" class="form-control" id="tentacles" name="tentacles" min="1" max="50" />
-            <input type="text" class="form-control" id="form-labels" placeholder="PCR mastermix components seperated by comma.">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label class="form-label">Number of Reactions</label>
+                <input type="number" class="form-control" id="tentacles" name="tentacles" min="1" max="50" />
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label class="form-label">Other Polymerases</label>
+                <input type="text" class="form-control" id="form-labels" placeholder="PCR mastermix components seperated by comma.">
+            </div>
         </div>
         <table class="table">
             <thead>
@@ -74,6 +83,19 @@
             </p>
         </div>
     </div>
+    <div class="tab-pane fade" id="protocol-tab-pane" role="tabpanel" aria-labelledby="#protocol-tab-pane" tabindex="0">
+        <div class="jumbotron">
+            <h3 class="display-5">Simple tool to calculate concentration of CRISPR reagents.</h3>
+            <p class="lead">Calculate reagents concentration.</p>
+            <hr class="my-4">
+            <h2>All Pages</h2>
+            <ul>
+                {% for entry in entries %}
+                    <li><a href="{% url 'protocol' entry %}">{{ entry }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
 {% else %}
 <div class="jumbotron">
@@ -82,7 +104,7 @@
     <hr class="my-4">
     <p>User friendly interface, minimalist design.</p>
     <p class="lead">
-        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Reigster Here</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'render_protocols' %}" role="button">Reigster Here</a>
     </p>
 </div>
 {% endif %}
