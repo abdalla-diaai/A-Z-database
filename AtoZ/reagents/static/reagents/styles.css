@@ -2,18 +2,18 @@ main {
     position: relative;
     min-height: 100vh;
 }
-.navbar {
+/* .navbar {
     margin: 20px;
-}
+} */
 
 .form-group {
     margin: 5px 0 5px 0;
 }
 
-button {
+/* button {
     margin: 10px 0 10px 0;
     cursor: pointer;
-}
+} */
 
 .navbar-brand {
     font-family: "Noto Sans Mono", monospace;
@@ -24,14 +24,6 @@ button {
     font-variation-settings:
         "wdth" 100;
     color: purple;
-}
-
-form {
-    padding: 20px;
-}
-
-#id_search {
-    margin-inline-end: 10px;
 }
 
 #delete:hover {

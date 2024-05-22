@@ -32,13 +32,4 @@ class CellsForm(StylishForm):
         }
       
 
-# form for search
-class NewSearch(forms.Form):
-    CHOICES = [("cells", "Cells"), ("reagents", "Reagents")]
-    search = forms.CharField(
-        label="",
-        widget=forms.TextInput(
-            attrs={"placeholder": "Search Database", "class": "form-control"}
-        ),
-    )
-    database_to_search = models.CharField(max_length=30, choices=CHOICES, default="Reagents")
+

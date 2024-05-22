@@ -22,7 +22,6 @@ def index(request):
         {
             "reagent_form": ReagentForm(),
             "cell_form": CellsForm(),
-            "search_form": NewSearch(),
             "entries": util.list_entries(),
         },
     )
@@ -113,7 +112,7 @@ def view_reagents(request):
     return render(
         request,
         "reagents/reagents.html",
-        {"page_obj": page_obj, "paginator": paginator, "search_form": NewSearch()},
+        {"page_obj": page_obj, "paginator": paginator},
     )
 
 
@@ -155,7 +154,7 @@ def view_cells(request):
     return render(
         request,
         "reagents/cells.html",
-        {"page_obj": page_obj, "paginator": paginator, "search_form": NewSearch()},
+        {"page_obj": page_obj, "paginator": paginator},
     )
 
 

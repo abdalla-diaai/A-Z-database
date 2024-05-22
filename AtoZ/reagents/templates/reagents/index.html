@@ -17,10 +17,6 @@
             role="tab" aria-controls="calculator-tab-pane" aria-selected="false">Scientific Calculator</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="crispr-tab" data-bs-toggle="tab" data-bs-target="#crispr-tab-pane" type="button"
-            role="tab" aria-controls="crispr-tab-pane" aria-selected="false">CRISPR Calculator</button>
-    </li>
-    <li class="nav-item" role="presentation">
         <button class="nav-link" id="protocol-tab" data-bs-toggle="tab" data-bs-target="#protocol-tab-pane" type="button"
             role="tab" aria-controls="protocol-tab-pane" aria-selected="false">Protocols</button>
     </li>
@@ -72,23 +68,13 @@
         </table>
         <span id="perRxn"></span>
     </div>
-    <div class="tab-pane fade" id="crispr-tab-pane" role="tabpanel" aria-labelledby="#crispr-tab-pane" tabindex="0">
-        <div class="jumbotron">
-            <h3 class="display-5">Simple tool to calculate concentration of CRISPR reagents.</h3>
-            <p class="lead">Calculate reagents concentration.</p>
-            <hr class="my-4">
-            <p>Hello.</p>
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Reigster Here</a>
-            </p>
-        </div>
-    </div>
+
     <div class="tab-pane fade" id="protocol-tab-pane" role="tabpanel" aria-labelledby="#protocol-tab-pane" tabindex="0">
         <div class="jumbotron">
-            <h3 class="display-5">Simple tool to calculate concentration of CRISPR reagents.</h3>
-            <p class="lead">Calculate reagents concentration.</p>
+            <h3 class="display-5">Protocols and SOPs.</h3>
+            <p class="lead">A list of available protocols.</p>
             <hr class="my-4">
-            <h2>All Pages</h2>
+            <h2>All protocols</h2>
             <ul>
                 {% for entry in entries %}
                     <li><a href="{% url 'protocol' entry %}">{{ entry }}</a></li>
@@ -104,7 +90,7 @@
     <hr class="my-4">
     <p>User friendly interface, minimalist design.</p>
     <p class="lead">
-        <a class="btn btn-primary btn-lg" href="{% url 'render_protocols' %}" role="button">Reigster Here</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Reigster Here</a>
     </p>
 </div>
 {% endif %}
