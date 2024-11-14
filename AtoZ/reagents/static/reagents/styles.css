@@ -7,11 +7,11 @@ main {
 }
 
 .form-group {
-    margin: 5px 0 5px 0;
+    margin: 10px 0 10px 0;
 }
 
 button {
-    margin: 10px 0 10px 0;
+    margin: 10px 0 10px 5px;
     cursor: pointer;
 }
 

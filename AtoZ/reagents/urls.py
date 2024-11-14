@@ -13,6 +13,7 @@ urlpatterns = [
     path("view_cells", views.view_cells, name="view_cells"),
     path("delete_reagent/<int:reagent_id>", views.delete_reagent, name="delete_reagent"),
     path("delete_cell/<int:cell_id>", views.delete_cell, name="delete_cell"),
-    path("search", views.search, name="search"),
+    path("reagents_search", views.reagents_search, name="reagents_search"),
+    path("cells_search", views.cells_search, name="cells_search"),
     path("view_protocol/<str:entry>", views.view_protocol, name="protocol"),
 ]

@@ -14,7 +14,6 @@ from django.db.models import Q
 from . import util
 import markdown2
 
-
 def index(request):
     return render(
         request,
@@ -22,11 +21,9 @@ def index(request):
         {
             "reagent_form": ReagentForm(),
             "cell_form": CellsForm(),
-            "search_form": NewSearch(),
             "entries": util.list_entries(),
         },
     )
-
 
 def login_view(request):
     if request.method == "POST":
@@ -48,11 +45,9 @@ def login_view(request):
     else:
         return render(request, "reagents/login.html")
 
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
-
 
 def register(request):
     if request.method == "POST":
@@ -82,7 +77,6 @@ def register(request):
     else:
         return render(request, "reagents/register.html")
 
-
 # add new reagent
 def add_reagent(request):
     if request.method == "POST":
@@ -102,7 +96,6 @@ def add_reagent(request):
         },
     )
 
-
 # view all reagents
 @login_required
 def view_reagents(request):
@@ -113,9 +106,9 @@ def view_reagents(request):
     return render(
         request,
         "reagents/reagents.html",
-        {"page_obj": page_obj, "paginator": paginator, "search_form": NewSearch()},
+        {"page_obj": page_obj, "paginator": paginator, 
+         "search_form": ReagentSearch()},
     )
-
 
 # delete a reagent
 @login_required
@@ -123,7 +116,6 @@ def delete_reagent(request, reagent_id):
     reagent = Reagent.objects.get(pk=reagent_id)
     reagent.delete()
     return HttpResponseRedirect(reverse("view_reagents"))
-
 
 # add new reagent
 def add_cell(request):
@@ -144,7 +136,6 @@ def add_cell(request):
         },
     )
 
-
 # view all reagents
 @login_required
 def view_cells(request):
@@ -155,9 +146,10 @@ def view_cells(request):
     return render(
         request,
         "reagents/cells.html",
-        {"page_obj": page_obj, "paginator": paginator, "search_form": NewSearch()},
+        {"page_obj": page_obj, "paginator": paginator,
+         "search_form": CellsSearch()
+         }
     )
-
 
 # delete a reagent
 @login_required
@@ -166,19 +158,17 @@ def delete_cell(request, cell_id):
     cell.delete()
     return HttpResponseRedirect(reverse("view_cells"))
 
-
 @login_required
-def search(request):
+def reagents_search(request):
     """function to perform search to take the user to the page"""
     reagents = Reagent.objects.all()
-    cells = CellLine.objects.all()
     if request.method == "POST":
-        form = NewSearch(request.POST)
+        form = ReagentSearch(request.POST)
         if form.is_valid():
             search = form.cleaned_data["search"]
             qset = Q()
             for term in search.split():
-                qset |= Q(reagent_name__contains=term)
+                qset = Q(reagent_name__contains=term)
 
             close_match = Reagent.objects.filter(qset)
             for reagent in reagents:
@@ -190,7 +180,7 @@ def search(request):
                         "reagents/search.html",
                         {
                             "exact_match": reagent.reagent_name,
-                            "search_form": NewSearch(),
+                            "search_form": ReagentSearch(),
                         },
                     )
             if close_match:
@@ -198,17 +188,16 @@ def search(request):
                 return render(
                     request,
                     "reagents/search.html",
-                    {"close_match": close_match, "search_form": NewSearch()},
+                    {"close_match": close_match, "search_form": ReagentSearch()},
                 )
             else:
                 messages.success(request, "No results found.")
                 return render(
                     request,
                     "reagents/search.html",
-                    {"search_form": NewSearch()},
+                    {"search_form": ReagentSearch()},
                 )
     return render(request, "reagents/index.html", {"reagents": reagents})
-
 
 def view_protocol(request, entry):
     """function to render pages and convert markdown to html pages."""
@@ -220,3 +209,44 @@ def view_protocol(request, entry):
         "reagents/protocol.html",
         {"entry_page": markdowner.convert(page), "title": entry},
     )
+
+@login_required
+def cells_search(request):
+    """function to perform search to take the user to the page"""
+    cells = CellLine.objects.all()
+    if request.method == "POST":
+        form = CellsSearch(request.POST)
+        if form.is_valid():
+            search = form.cleaned_data["search"]
+            qset = Q()
+            for term in search.split():
+                qset = Q(cell_name__contains=term)
+
+            close_match = CellLine.objects.filter(qset)
+            for cell in cells:
+                if search.casefold() == cell.cell_name.casefold():
+                    messages.success(request, "Match Found!.")
+
+                    return render(
+                        request,
+                        "reagents/search.html",
+                        {
+                            "exact_match": cell.cell_name,
+                            "search_form": CellsSearch(),
+                        },
+                    )
+            if close_match:
+                messages.success(request, "Match Found!.")
+                return render(
+                    request,
+                    "reagents/search.html",
+                    {"close_match": close_match, "search_form": CellsSearch()},
+                )
+            else:
+                messages.success(request, "No results found.")
+                return render(
+                    request,
+                    "reagents/search.html",
+                    {"search_form": CellsSearch()},
+                )
+    return render(request, "reagents/index.html", {"cells": cells})
