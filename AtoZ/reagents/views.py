@@ -296,21 +296,3 @@ def cells_search(request):
                     {"search_form": CellsSearch()},
                 )
     return render(request, "reagents/index.html", {"cells": cells})
-
-# upload protocol
-@login_required
-def upload_protocol(request):
-    if request.method == "POST":
-        form = NewProtocol(request.POST, request.FILES)
-        if form.is_valid():
-            if "save" in request.POST:
-                form.instance.owner = request.user.username
-                form.save()
-        return HttpResponseRedirect(reverse("index"))
-    return render(
-        request, "reagents/index.html", {"protocol_form": NewProtocol()}
-    )
-# with open("document.docx", "rb") as docx_file:
-#     result = mammoth.convert_to_html(docx_file)
-#     html = result.value # The generated HTML
-#     messages = result.messages # Any messages, such as warnings during conversion

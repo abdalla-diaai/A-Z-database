@@ -65,8 +65,3 @@ class Experiment(TimeStampedModel):
     
 
 
-class Protocol(TimeStampedModel):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-    protocol_name = models.CharField(max_length=64)
-    created = TimeStampedModel.created_at
-    protocol_file = models.FileField(upload_to="entries/docx", blank=True)

@@ -57,19 +57,3 @@ class CellsSearch(forms.Form):
         ),
     )
     database_to_search = models.CharField(max_length=30)
-
-
-
-
-# form to upload a protocol
-class NewProtocol(forms.ModelForm):
-    protocol_file = forms.FileField(required=False)
-    class Meta:
-        model = Protocol
-        fields = [
-            "protocol_name",
-            "protocol_file"
-        ]
-        widgets = {
-            "owner": forms.HiddenInput(),
-        }
