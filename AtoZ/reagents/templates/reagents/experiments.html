@@ -21,6 +21,8 @@
                 <th scope="col">Summary</th>
                 <th scope="col">Owner</th>
                 <th scope="col">Created At</th>
+                <th scope="col">View</th>
+
             </tr>
         </thead>
         <tbody>
@@ -32,6 +34,7 @@
                 <td>{{ experiment.summary }}</td>
                 <td>{{ experiment.owner }}</td>
                 <td> {{ experiment.created }}</td>
+                <td><a id="view" href="{% url 'view_experiment' experiment.id %}">View</a></td>
             </tr>
             {% endfor %}
         </tbody>

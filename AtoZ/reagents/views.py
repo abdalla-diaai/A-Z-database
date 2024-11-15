@@ -96,7 +96,7 @@ def add_experiment(request):
         },
     )
 
-# view all reagents
+# view all experiments
 @login_required
 def view_experiments(request):
     reagents = Experiment.objects.all()
@@ -108,6 +108,18 @@ def view_experiments(request):
         "reagents/experiments.html",
         {"page_obj": page_obj, "paginator": paginator, 
          "search_form": ReagentSearch()},
+    )
+
+# view an experiment
+@login_required
+def view_experiment(request, experiment_id):
+    experiment = Experiment.objects.get(pk=experiment_id)
+    return render(
+        request,
+        "reagents/experiment.html",
+        {
+            "experiment": experiment
+        }
     )
 
 # add new reagent
