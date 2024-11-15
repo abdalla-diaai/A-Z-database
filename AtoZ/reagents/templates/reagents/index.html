@@ -23,7 +23,7 @@
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="protocol-tab" data-bs-toggle="tab" data-bs-target="#protocol-tab-pane"
-            type="button" role="tab" aria-controls="protocol-tab-pane" aria-selected="false">Protocols</button>
+            type="button" role="tab" aria-controls="protocol-tab-pane" aria-selected="false">New Protocol</button>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -67,7 +67,7 @@
     </div>
     <div class="tab-pane fade" id="calculator-tab-pane" role="tabpanel" aria-labelledby="#calculator-tab-pane"
         tabindex="0">
-        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Small button group" id="pcr-btn">
             <button id="phusion" type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip"
                 data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                 data-bs-title="Phusion Flash High-Fidelity PCR Master Mix. Catalog number: F548L. Total volume 20µL.">Phusion</button>
@@ -105,13 +105,12 @@
     <div class="tab-pane fade" id="protocol-tab-pane" role="tabpanel" aria-labelledby="#protocol-tab-pane" tabindex="0">
         <form enctype="multipart/form-data" action="{% url 'upload_file' %}" method="POST">
             {% csrf_token %}
-            {% for field in protocol_form %}
             <div class="form-group">
-                <div class="form-labels">{{ field.label }}</div>
-                <div class="form-fields">{{ field }}</div>
-            </div>
-            {% endfor %}
-            <button class="btn btn-primary" type="submit">Search</button>
+                {{ protocol_form.title.label }}
+                {{ protocol_form.title }}
+            </div>     
+            {{ protocol_form.upload }}
+            <button class="btn btn-primary" type="submit">Upload</button>
         </form>
     </div>
 </div>
