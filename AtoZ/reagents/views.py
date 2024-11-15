@@ -308,14 +308,13 @@ def upload_file(request):
     if request.method == "POST":
         form = NewProtocol(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            myfile = request.FILES['upload']
-            result = mammoth.convert_to_html(myfile)
-            html = result.value # The generated HTML
+            uploaded_file = request.FILES['upload']
+            result = mammoth.convert_to_html(uploaded_file)
+            html = result.value 
             markdown = pyhtml2md.convert(html)
-             # Define the file path for saving the Markdown file
-            markdown_filename = f"{myfile.name}.md"  # You can customize this as needed
-            entries_folder = os.path.join(settings.MEDIA_ROOT, 'entries')  # 'entries' folder inside MEDIA_ROOT
+            # Define the file path for saving the Markdown file
+            markdown_filename = f"{request.POST['title']}.md"
+            entries_folder = os.path.join(settings.MEDIA_ROOT, 'entries')  
             file_path = os.path.join(entries_folder, markdown_filename)
             
             # Ensure the 'entries' directory exists
