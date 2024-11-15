@@ -15,6 +15,8 @@ from django.db.models import Q
 from . import util
 import markdown2
 import mammoth
+import os
+import pyhtml2md
 
 def index(request):
     return render(
@@ -307,8 +309,24 @@ def upload_file(request):
         form = NewProtocol(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            myfile = request.FILES['upload']
+            result = mammoth.convert_to_html(myfile)
+            html = result.value # The generated HTML
+            markdown = pyhtml2md.convert(html)
+             # Define the file path for saving the Markdown file
+            markdown_filename = f"{myfile.name}.md"  # You can customize this as needed
+            entries_folder = os.path.join(settings.MEDIA_ROOT, 'entries')  # 'entries' folder inside MEDIA_ROOT
+            file_path = os.path.join(entries_folder, markdown_filename)
+            
+            # Ensure the 'entries' directory exists
+            os.makedirs(entries_folder, exist_ok=True)
+                        
+            # Save the Markdown content to the file system
+            with open(file_path, 'w', encoding='utf-8') as markdown_file:
+                markdown_file.write(markdown)
             return HttpResponseRedirect(reverse("index"))
     else:
         form = NewProtocol()
     return render(request, "reagents/index.html", {"form": form})
+
 

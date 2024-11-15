@@ -64,7 +64,6 @@ class Experiment(TimeStampedModel):
         return f"{self.owner} {self.title} {self.objective} {self.methods} {self.results} {self.summary}"
     
 
-
 class Protocol(TimeStampedModel):
     created = TimeStampedModel.created_at
     title = models.CharField(max_length=100, blank=True, null=True)
