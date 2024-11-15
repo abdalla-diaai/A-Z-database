@@ -19,6 +19,7 @@ def index(request):
         request,
         "reagents/index.html",
         {
+            "experiment_form": ExperimentForm(),
             "reagent_form": ReagentForm(),
             "cell_form": CellsForm(),
             "entries": util.list_entries(),
@@ -76,6 +77,38 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "reagents/register.html")
+# add new experiment
+def add_experiment(request):
+    if request.method == "POST":
+        form = ExperimentForm(request.POST)
+        if form.is_valid():
+            experiment = form.save(commit=False)
+            experiment.owner = request.user
+            experiment.save()
+            return HttpResponseRedirect(reverse("view_experiments"))
+    else:
+        form = ExperimentForm(request.POST)
+    return render(
+        request,
+        "reagents/index.html",
+        {
+            "form": form,
+        },
+    )
+
+# view all reagents
+@login_required
+def view_experiments(request):
+    reagents = Experiment.objects.all()
+    paginator = Paginator(reagents, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(
+        request,
+        "reagents/experiments.html",
+        {"page_obj": page_obj, "paginator": paginator, 
+         "search_form": ReagentSearch()},
+    )
 
 # add new reagent
 def add_reagent(request):
@@ -221,7 +254,7 @@ def cells_search(request):
             qset = Q()
             for term in search.split():
                 qset = Q(cell_name__contains=term)
-
+  
             close_match = CellLine.objects.filter(qset)
             for cell in cells:
                 if search.casefold() == cell.cell_name.casefold():

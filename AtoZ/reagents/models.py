@@ -51,3 +51,14 @@ class CellLine(TimeStampedModel):
         return f"{self.owner} {self.cell_name} {self.media} {self.genotype} {self.storage_position}"
     
 
+class Experiment(TimeStampedModel):
+    created = TimeStampedModel.created_at
+    title = models.CharField(max_length=300, blank=True, null=True)
+    objective = models.TextField(blank=True, null=True)
+    methods = models.TextField(blank=True, null=True)
+    results = models.TextField(blank=True, null=True)
+    summary = models.TextField(blank=True, null=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+
+    def __str__(self) -> str:
+        return f"{self.owner} {self.title} {self.objective} {self.methods} {self.results} {self.summary}"

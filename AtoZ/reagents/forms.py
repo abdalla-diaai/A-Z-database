@@ -11,7 +11,13 @@ class StylishForm(ModelForm):
         for field in self.fields.values():
             field.widget.attrs.update({"class": "form-control"})
 
-
+class ExperimentForm(StylishForm):
+    class Meta:
+        model = Experiment
+        fields = ["title", "objective", "methods", "results", "summary"]
+        widgets = {
+            "owner": forms.HiddenInput(),
+        }
 
 class ReagentForm(StylishForm):
     class Meta:
