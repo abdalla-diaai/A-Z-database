@@ -19,5 +19,5 @@ urlpatterns = [
     path("delete_cell/<int:cell_id>", views.delete_cell, name="delete_cell"),
     path("cells_search", views.cells_search, name="cells_search"),
     path("view_protocol/<str:entry>", views.view_protocol, name="protocol"),
-
+    path("upload_file", views.upload_file, name="upload_file"),
 ]

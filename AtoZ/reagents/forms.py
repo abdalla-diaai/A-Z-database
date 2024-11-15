@@ -27,6 +27,18 @@ class ReagentForm(StylishForm):
             "owner": forms.HiddenInput(),
         }
       
+# form to upload a protocol
+class NewProtocol(StylishForm):
+    upload = forms.FileField(required=False)
+    class Meta:
+        model = Protocol
+        fields = [
+            "title",
+            "upload"
+        ]
+        widgets = {
+            "owner": forms.HiddenInput(),
+        }
 
 
 class CellsForm(StylishForm):
@@ -57,3 +69,7 @@ class CellsSearch(forms.Form):
         ),
     )
     database_to_search = models.CharField(max_length=30)
+
+
+
+

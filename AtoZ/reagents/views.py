@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
+from django.core.files.storage import FileSystemStorage
 from .models import User
 from .forms import *
 from django.db.models import Q
@@ -23,6 +24,7 @@ def index(request):
             "experiment_form": ExperimentForm(),
             "reagent_form": ReagentForm(),
             "cell_form": CellsForm(),
+            "protocol_form": NewProtocol(),
             "entries": util.list_entries(),
         },
     )
@@ -78,6 +80,7 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "reagents/register.html")
+
 # add new experiment
 def add_experiment(request):
     if request.method == "POST":
@@ -296,3 +299,16 @@ def cells_search(request):
                     {"search_form": CellsSearch()},
                 )
     return render(request, "reagents/index.html", {"cells": cells})
+
+
+# upload file
+def upload_file(request):
+    if request.method == "POST":
+        form = NewProtocol(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("index"))
+    else:
+        form = NewProtocol()
+    return render(request, "reagents/index.html", {"form": form})
+
