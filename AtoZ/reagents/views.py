@@ -26,8 +26,7 @@ def index(request):
             "experiment_form": ExperimentForm(),
             "reagent_form": ReagentForm(),
             "cell_form": CellsForm(),
-            "protocol_form": NewProtocol(),
-            "entries": util.list_entries(),
+            "protocol_form": NewProtocol()
         },
     )
 
@@ -249,6 +248,15 @@ def reagents_search(request):
                     {"search_form": ReagentSearch()},
                 )
     return render(request, "reagents/index.html", {"reagents": reagents})
+
+
+def view_protocols(request):
+    """function to render pages."""
+    return render(
+        request,
+        "reagents/protocols.html",
+        {"entries": util.list_entries()},
+    )
 
 def view_protocol(request, entry):
     """function to render pages and convert markdown to html pages."""
