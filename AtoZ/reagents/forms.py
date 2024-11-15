@@ -9,7 +9,7 @@ class StylishForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs.update({"class": "form-control"})
+            field.widget.attrs.update({"class": "form-control form-control-sm" "form-outline w-50"})
 
 class ExperimentForm(StylishForm):
     class Meta:

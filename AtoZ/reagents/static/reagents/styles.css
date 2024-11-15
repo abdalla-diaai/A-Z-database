@@ -67,3 +67,7 @@ footer {
 .table {
     margin: 20px 0 20px 0 !important;
 }
+
+.form-labels {
+    margin-inline-end: 10px;
+}
