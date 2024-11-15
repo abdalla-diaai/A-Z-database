@@ -62,3 +62,11 @@ class Experiment(TimeStampedModel):
 
     def __str__(self) -> str:
         return f"{self.owner} {self.title} {self.objective} {self.methods} {self.results} {self.summary}"
+    
+
+
+class Protocol(TimeStampedModel):
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    protocol_name = models.CharField(max_length=64)
+    created = TimeStampedModel.created_at
+    protocol_file = models.FileField(upload_to="entries/docx", blank=True)

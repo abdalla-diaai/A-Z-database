@@ -99,6 +99,13 @@
             <h3 class="display-5">Simple tool to calculate concentration of CRISPR reagents.</h3>
             <p class="lead">Calculate reagents concentration.</p>
             <hr class="my-4">
+            <form class="d-flex" action="{% url 'upload_protocol' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ protocol_form.as_p }}
+                </div>
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
             <h2>All Pages</h2>
             <ul>
                 {% for entry in entries %}

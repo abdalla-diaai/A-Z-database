@@ -2,5 +2,25 @@
 {% load static %}
 
 {% block body %}
-    {{ experiment }}
+    <div class="row" class="index-card">
+        
+            <h5>Title:</h5>
+            <p>{{ experiment.title }}</p>
+            <h6>Objective:</h6>
+            <p>{{ experiment.objective }}</p>
+
+            <h6>Methods:</h6>
+            <p>{{ experiment.methods }}</p>
+            <h6>Results:</h6>
+            <p>{{ experiment.Results }}</p>
+            <h6>Summary:</h6>
+            <p>{{ experiment.summary }}</p>
+
+            <figcaption class="blockquote-footer">
+                Created by: {{ experiment.owner }}
+            </figcaption>
+            <figcaption class="blockquote-footer">
+                Created at: {{ experiment.created }}
+            </figcaption>
+    </div>
 {% endblock %}
