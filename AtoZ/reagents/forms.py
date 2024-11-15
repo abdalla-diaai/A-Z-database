@@ -29,7 +29,7 @@ class ReagentForm(StylishForm):
       
 # form to upload a protocol
 class NewProtocol(StylishForm):
-    upload = forms.FileField(required=False)
+    upload = forms.FileField(required=True)
     class Meta:
         model = Protocol
         fields = [

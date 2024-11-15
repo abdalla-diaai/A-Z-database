@@ -332,6 +332,8 @@ def upload_file(request):
             with open(file_path, 'w', encoding='utf-8') as markdown_file:
                 markdown_file.write(markdown)
             return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "reagents/index.html", {"form": form})
     else:
         form = NewProtocol()
     return render(request, "reagents/index.html", {"form": form})

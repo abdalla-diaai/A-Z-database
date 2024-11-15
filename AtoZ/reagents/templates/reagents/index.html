@@ -5,8 +5,8 @@
 {% if user.is_authenticated %}
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="experiment-tab" data-bs-toggle="tab" data-bs-target="#experiment-tab-pane" type="button"
-            role="tab" aria-controls="experiment-tab-pane" aria-selected="true">New Experiment</button>
+        <button class="nav-link active" id="experiment-tab" data-bs-toggle="tab" data-bs-target="#experiment-tab-pane"
+            type="button" role="tab" aria-controls="experiment-tab-pane" aria-selected="true">New Experiment</button>
     </li>
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
@@ -17,49 +17,67 @@
             role="tab" aria-controls="profile-tab-pane" aria-selected="false">New Cell Line</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="calculator-tab" data-bs-toggle="tab" data-bs-target="#calculator-tab-pane" type="button"
-            role="tab" aria-controls="calculator-tab-pane" aria-selected="false">Scientific Calculator</button>
+        <button class="nav-link" id="calculator-tab" data-bs-toggle="tab" data-bs-target="#calculator-tab-pane"
+            type="button" role="tab" aria-controls="calculator-tab-pane" aria-selected="false">Scientific
+            Calculator</button>
     </li>
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="crispr-tab" data-bs-toggle="tab" data-bs-target="#crispr-tab-pane" type="button"
-            role="tab" aria-controls="crispr-tab-pane" aria-selected="false">CRISPR Calculator</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="protocol-tab" data-bs-toggle="tab" data-bs-target="#protocol-tab-pane" type="button"
-            role="tab" aria-controls="protocol-tab-pane" aria-selected="false">Protocols</button>
+        <button class="nav-link" id="protocol-tab" data-bs-toggle="tab" data-bs-target="#protocol-tab-pane"
+            type="button" role="tab" aria-controls="protocol-tab-pane" aria-selected="false">Protocols</button>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="experiment-tab-pane" role="tabpanel" aria-labelledby="experiment-tab" tabindex="0">
+    <div class="tab-pane fade show active" id="experiment-tab-pane" role="tabpanel" aria-labelledby="experiment-tab"
+        tabindex="0">
         <form action="{% url 'add_experiment' %}" method="POST">
             {% csrf_token %}
-            {{ experiment_form.as_p }}
-            <input id="post-button" class="btn btn-secondary btn-sm" type="submit" value="Save" name="save">
+            {% for field in experiment_form %}
+            <div class="form-group">
+                <div class="form-labels">{{ field.label }}</div>
+                <div class="form-fields">{{ field }}</div>
+            </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </div>
     <div class="tab-pane fade" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
         <form action="{% url 'add_reagent' %}" method="POST">
             {% csrf_token %}
-            {{ reagent_form.as_p }}
-            <input id="post-button" class="btn btn-secondary btn-sm" type="submit" value="Save" name="save">
+            {% for field in reagent_form %}
+            <div class="form-group">
+                <div class="form-labels">{{ field.label }}</div>
+                <div class="form-fields">{{ field }}</div>
+            </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Search</button>
+
         </form>
     </div>
     <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
         <form action="{% url 'add_cell' %}" method="POST">
             {% csrf_token %}
-            {{ cell_form.as_p }}
-            <input id="post-button" class="btn btn-secondary btn-sm" type="submit" value="Save" name="save">
+            {% for field in cell_form %}
+            <div class="form-group">
+                <div class="form-labels">{{ field.label }}</div>
+                <div class="form-fields">{{ field }}</div>
+            </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </div>
-    <div class="tab-pane fade" id="calculator-tab-pane" role="tabpanel" aria-labelledby="#calculator-tab-pane" tabindex="0">
+    <div class="tab-pane fade" id="calculator-tab-pane" role="tabpanel" aria-labelledby="#calculator-tab-pane"
+        tabindex="0">
         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
-            <button id="phusion"  type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-custom-class="custom-tooltip" data-bs-title="Phusion Flash High-Fidelity PCR Master Mix. Catalog number: F548L. Total volume 20µL.">Phusion</button>
-            <button id="toughmix" type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-custom-class="custom-tooltip" data-bs-title="repliQa HiFi ToughMix. Catalog number: 95200-100. Total volume 25µL.">ToughMix</button>
-            <button id="other" type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-custom-class="custom-tooltip" data-bs-title="Any other polymerase. Write PCR components below seperated by comma.">Other</button>
-          </div>
+            <button id="phusion" type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip"
+                data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                data-bs-title="Phusion Flash High-Fidelity PCR Master Mix. Catalog number: F548L. Total volume 20µL.">Phusion</button>
+            <button id="toughmix" type="button" class="btn btn-outline-secondary" data-bs-toggle="tooltip"
+                data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                data-bs-title="repliQa HiFi ToughMix. Catalog number: 95200-100. Total volume 25µL.">ToughMix</button>
+            <button id="other" type="button" class="btn btn-outline-dark" data-bs-toggle="tooltip"
+                data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                data-bs-title="Any other polymerase. Write PCR components below seperated by comma.">Other</button>
+        </div>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <label class="form-label">Number of Reactions</label>
@@ -67,50 +85,34 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <label class="form-label">Other Polymerases</label>
-                <input type="text" class="form-control" id="form-labels" placeholder="PCR mastermix components seperated by comma.">
+                <input type="text" class="form-control" id="form-labels"
+                    placeholder="PCR mastermix components seperated by comma.">
             </div>
         </div>
         <table class="table">
             <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Reagent</th>
-                <th scope="col">Volume (µL)</th>
-              </tr>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Reagent</th>
+                    <th scope="col">Volume (µL)</th>
+                </tr>
             </thead>
             <tbody id="table-body">
             </tbody>
         </table>
         <span id="perRxn"></span>
     </div>
-    <div class="tab-pane fade" id="crispr-tab-pane" role="tabpanel" aria-labelledby="#crispr-tab-pane" tabindex="0">
-        <div class="jumbotron">
-            <h3 class="display-5">Simple tool to calculate concentration of CRISPR reagents.</h3>
-            <p class="lead">Calculate reagents concentration.</p>
-            <hr class="my-4">
-            <p>Hello.</p>
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Reigster Here</a>
-            </p>
-        </div>
-    </div>
     <div class="tab-pane fade" id="protocol-tab-pane" role="tabpanel" aria-labelledby="#protocol-tab-pane" tabindex="0">
-        <div class="jumbotron">
-            <h3 class="display-5">Simple tool to calculate concentration of CRISPR reagents.</h3>
-            <p class="lead">Calculate reagents concentration.</p>
-            <hr class="my-4">
-            <form enctype="multipart/form-data" action="{% url 'upload_file' %}" method="POST">
-                {% csrf_token %}
-                {{ protocol_form }}
-                <input class="btn btn-primary" type="submit" value="Save" name="save">
-            </form>
-            <h2>All Pages</h2>
-            <ul>
-                {% for entry in entries %}
-                    <li><a href="{% url 'protocol' entry %}">{{ entry }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
+        <form enctype="multipart/form-data" action="{% url 'upload_file' %}" method="POST">
+            {% csrf_token %}
+            {% for field in protocol_form %}
+            <div class="form-group">
+                <div class="form-labels">{{ field.label }}</div>
+                <div class="form-fields">{{ field }}</div>
+            </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
     </div>
 </div>
 {% else %}
