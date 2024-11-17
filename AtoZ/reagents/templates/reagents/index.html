@@ -3,6 +3,12 @@
 
 {% block body %}
 {% if user.is_authenticated %}
+<div class="jumbotron">
+    <h1 class="display-4">Accelerate your research with our reagent search engine</h1>
+    <p class="lead">Search our database of antibodies, biochemicals, proteins, kits and cell lines & models.</p>
+    <hr class="my-4">
+    <p>User friendly interface, minimalist design.</p>
+</div>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="experiment-tab" data-bs-toggle="tab" data-bs-target="#experiment-tab-pane"
@@ -16,11 +22,11 @@
         <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
             role="tab" aria-controls="profile-tab-pane" aria-selected="false">New Cell Line</button>
     </li>
-    <li class="nav-item" role="presentation">
+    <!-- <li class="nav-item" role="presentation">
         <button class="nav-link" id="calculator-tab" data-bs-toggle="tab" data-bs-target="#calculator-tab-pane"
             type="button" role="tab" aria-controls="calculator-tab-pane" aria-selected="false">Scientific
             Calculator</button>
-    </li>
+    </li> -->
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="protocol-tab" data-bs-toggle="tab" data-bs-target="#protocol-tab-pane"
             type="button" role="tab" aria-controls="protocol-tab-pane" aria-selected="false">New Protocol</button>
@@ -29,7 +35,7 @@
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="experiment-tab-pane" role="tabpanel" aria-labelledby="experiment-tab"
         tabindex="0">
-        <form action="{% url 'add_experiment' %}" method="POST">
+        <form enctype="multipart/form-data" action="{% url 'add_experiment' %}" method="POST">
             {% csrf_token %}
             {% for field in experiment_form %}
             <div class="form-group">
@@ -37,7 +43,7 @@
                 <div class="form-fields">{{ field }}</div>
             </div>
             {% endfor %}
-            <button class="btn btn-primary" type="submit">Search</button>
+            <button class="btn btn-primary" type="submit">Save</button>
         </form>
     </div>
     <div class="tab-pane fade" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
@@ -49,7 +55,7 @@
                 <div class="form-fields">{{ field }}</div>
             </div>
             {% endfor %}
-            <button class="btn btn-primary" type="submit">Search</button>
+            <button class="btn btn-primary" type="submit">Save</button>
 
         </form>
     </div>
@@ -62,10 +68,10 @@
                 <div class="form-fields">{{ field }}</div>
             </div>
             {% endfor %}
-            <button class="btn btn-primary" type="submit">Search</button>
+            <button class="btn btn-primary" type="submit">Save</button>
         </form>
     </div>
-    <div class="tab-pane fade" id="calculator-tab-pane" role="tabpanel" aria-labelledby="#calculator-tab-pane"
+    <!-- <div class="tab-pane fade" id="calculator-tab-pane" role="tabpanel" aria-labelledby="#calculator-tab-pane"
         tabindex="0">
         <div class="btn-group btn-group-sm" role="group" aria-label="Small button group" id="pcr-btn">
             <button id="phusion" type="button" class="btn btn-outline-primary" data-bs-toggle="tooltip"
@@ -101,9 +107,9 @@
             </tbody>
         </table>
         <span id="perRxn"></span>
-    </div>
+    </div> -->
     <div class="tab-pane fade" id="protocol-tab-pane" role="tabpanel" aria-labelledby="#protocol-tab-pane" tabindex="0">
-        <form enctype="multipart/form-data" action="{% url 'upload_file' %}" method="POST">
+        <form enctype="multipart/form-data" action="{% url 'upload_protocol' %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 {{ protocol_form.title.label }}

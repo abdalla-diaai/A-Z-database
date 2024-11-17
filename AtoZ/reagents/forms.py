@@ -14,7 +14,7 @@ class StylishForm(ModelForm):
 class ExperimentForm(StylishForm):
     class Meta:
         model = Experiment
-        fields = ["title", "objective", "methods", "results", "summary"]
+        fields = ["title", "objective", "methods", "results", "summary", "upload"]
         widgets = {
             "owner": forms.HiddenInput(),
         }
@@ -28,10 +28,10 @@ class ReagentForm(StylishForm):
         }
       
 # form to upload a protocol
-class NewProtocol(StylishForm):
+class UploadFile(StylishForm):
     upload = forms.FileField(required=True)
     class Meta:
-        model = Protocol
+        model = UploadFile
         fields = [
             "title",
             "upload"

@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
-from django.core.files.storage import FileSystemStorage
+from docx2pdf import convert
 from .models import User
 from .forms import *
 from django.db.models import Q
@@ -17,6 +17,8 @@ import markdown2
 import mammoth
 import os
 import pyhtml2md
+import pypandoc
+
 
 def index(request):
     return render(
@@ -26,7 +28,7 @@ def index(request):
             "experiment_form": ExperimentForm(),
             "reagent_form": ReagentForm(),
             "cell_form": CellsForm(),
-            "protocol_form": NewProtocol()
+            "protocol_form": UploadFile()
         },
     )
 
@@ -85,14 +87,14 @@ def register(request):
 # add new experiment
 def add_experiment(request):
     if request.method == "POST":
-        form = ExperimentForm(request.POST)
+        form = ExperimentForm(request.POST, request.FILES)
         if form.is_valid():
             experiment = form.save(commit=False)
             experiment.owner = request.user
             experiment.save()
             return HttpResponseRedirect(reverse("view_experiments"))
     else:
-        form = ExperimentForm(request.POST)
+        form = ExperimentForm()
     return render(
         request,
         "reagents/index.html",
@@ -104,15 +106,16 @@ def add_experiment(request):
 # view all experiments
 @login_required
 def view_experiments(request):
-    reagents = Experiment.objects.all()
-    paginator = Paginator(reagents, 10)
+    experiments = Experiment.objects.all()
+    paginator = Paginator(experiments, 10)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
         request,
         "reagents/experiments.html",
         {"page_obj": page_obj, "paginator": paginator, 
-         "search_form": ReagentSearch()},
+         "search_form": ReagentSearch(),
+         },
     )
 
 # view an experiment
@@ -311,10 +314,10 @@ def cells_search(request):
     return render(request, "reagents/index.html", {"cells": cells})
 
 
-# upload file
-def upload_file(request):
+# upload protocol file 
+def upload_protocol(request):
     if request.method == "POST":
-        form = NewProtocol(request.POST, request.FILES)
+        form = UploadFile(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = request.FILES['upload']
             result = mammoth.convert_to_html(uploaded_file)
@@ -335,7 +338,5 @@ def upload_file(request):
         else:
             return render(request, "reagents/index.html", {"form": form})
     else:
-        form = NewProtocol()
+        form = UploadFile()
     return render(request, "reagents/index.html", {"form": form})
-
-

@@ -20,5 +20,5 @@ urlpatterns = [
     path("cells_search", views.cells_search, name="cells_search"),
     path("view_protocols", views.view_protocols, name="view_protocols"),
     path("view_protocol/<str:entry>", views.view_protocol, name="protocol"),
-    path("upload_file", views.upload_file, name="upload_file"),
+    path("upload_protocol", views.upload_protocol, name="upload_protocol"),
 ]
