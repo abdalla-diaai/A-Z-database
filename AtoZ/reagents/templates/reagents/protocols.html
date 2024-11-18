@@ -21,6 +21,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Owner</th>
                 <th scope="col">Created At</th>
+                <th scope="col">View</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +31,7 @@
                 <td>{{ protocol.title }}</td>
                 <td>{{ protocol.owner }}</td>
                 <td> {{ protocol.created }}</td>
+                <td>   <a href="{% url 'protocol' protocol.title %}">View</a> </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -59,14 +61,5 @@
 </nav>
 {% endif %}
 {% endif %}
-
-
-
-
-<ul>
-    {% for entry in entries %}
-    <li><a href="{% url 'protocol' entry %}">{{ entry }}</a></li>
-    {% endfor %}
-</ul>
 
 {% endblock %}
