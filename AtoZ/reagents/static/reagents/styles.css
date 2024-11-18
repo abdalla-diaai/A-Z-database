@@ -71,3 +71,19 @@ footer {
 .form-labels {
     margin-inline-end: 10px;
 }
+
+.d-flex {
+    justify-content: flex-end !important;
+}
+
+.page-container {
+    justify-content: flex-start !important;
+    
+}
+.jumbotron {
+    padding: 50px 0 20px 0;
+}
+
+.btn-secondary {
+    margin: 20px 0 20px 0;
+}

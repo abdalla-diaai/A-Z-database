@@ -254,11 +254,17 @@ def reagents_search(request):
 
 
 def view_protocols(request):
+    protocols = Protocol.objects.all()
+    paginator = Paginator(protocols, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     """function to render pages."""
     return render(
         request,
         "reagents/protocols.html",
-        {"entries": util.list_entries()},
+        {"entries": util.list_entries(),
+         "page_obj": page_obj, "paginator": paginator, },
     )
 
 def view_protocol(request, entry):
@@ -319,6 +325,9 @@ def upload_protocol(request):
     if request.method == "POST":
         form = UploadFile(request.POST, request.FILES)
         if form.is_valid():
+            protocol = form.save(commit=False)
+            protocol.owner = request.user
+            protocol.save()
             uploaded_file = request.FILES['upload']
             result = mammoth.convert_to_html(uploaded_file)
             html = result.value 

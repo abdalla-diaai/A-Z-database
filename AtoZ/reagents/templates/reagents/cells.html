@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block body %}
-<form class="d-flex" action="{% url 'cells_search' %}" method="POST">
+<form class="search-form d-flex" action="{% url 'cells_search' %}" method="POST">
     {% csrf_token %}
     <div class="form-group">
         {{ search_form }}

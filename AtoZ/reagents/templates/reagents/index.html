@@ -9,29 +9,32 @@
     <hr class="my-4">
     <p>User friendly interface, minimalist design.</p>
 </div>
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="experiment-tab" data-bs-toggle="tab" data-bs-target="#experiment-tab-pane"
-            type="button" role="tab" aria-controls="experiment-tab-pane" aria-selected="true">New Experiment</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
-            role="tab" aria-controls="profile-tab-pane" aria-selected="false">New Reagent</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button"
-            role="tab" aria-controls="profile-tab-pane" aria-selected="false">New Cell Line</button>
-    </li>
-    <!-- <li class="nav-item" role="presentation">
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="experiment-tab" data-bs-toggle="tab"
+                data-bs-target="#experiment-tab-pane" type="button" role="tab" aria-controls="experiment-tab-pane"
+                aria-selected="true">New Experiment</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button"
+                role="tab" aria-controls="profile-tab-pane" aria-selected="false">New Reagent</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">New Cell Line</button>
+        </li>
+        <!-- <li class="nav-item" role="presentation">
         <button class="nav-link" id="calculator-tab" data-bs-toggle="tab" data-bs-target="#calculator-tab-pane"
             type="button" role="tab" aria-controls="calculator-tab-pane" aria-selected="false">Scientific
             Calculator</button>
     </li> -->
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="protocol-tab" data-bs-toggle="tab" data-bs-target="#protocol-tab-pane"
-            type="button" role="tab" aria-controls="protocol-tab-pane" aria-selected="false">New Protocol</button>
-    </li>
-</ul>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="protocol-tab" data-bs-toggle="tab" data-bs-target="#protocol-tab-pane"
+                type="button" role="tab" aria-controls="protocol-tab-pane" aria-selected="false">New Protocol</button>
+        </li>
+    </ul>
+</div>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="experiment-tab-pane" role="tabpanel" aria-labelledby="experiment-tab"
         tabindex="0">
@@ -114,7 +117,7 @@
             <div class="form-group">
                 {{ protocol_form.title.label }}
                 {{ protocol_form.title }}
-            </div>     
+            </div>
             {{ protocol_form.upload }}
             <button class="btn btn-primary" type="submit">Upload</button>
         </form>

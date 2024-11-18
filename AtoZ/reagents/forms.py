@@ -31,7 +31,7 @@ class ReagentForm(StylishForm):
 class UploadFile(StylishForm):
     upload = forms.FileField(required=True)
     class Meta:
-        model = UploadFile
+        model = Protocol
         fields = [
             "title",
             "upload"

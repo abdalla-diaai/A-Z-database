@@ -65,7 +65,7 @@ class Experiment(TimeStampedModel):
         return f"{self.owner} {self.title} {self.objective} {self.methods} {self.results} {self.summary}"
     
 
-class UploadFile(TimeStampedModel):
+class Protocol(TimeStampedModel):
     created = TimeStampedModel.created_at
     title = models.CharField(max_length=100, blank=True, null=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
