@@ -29,7 +29,7 @@ class ReagentForm(StylishForm):
       
 # form to upload a protocol
 class UploadFile(StylishForm):
-    upload = forms.FileField(required=True)
+    upload = forms.FileField(required=False)
     class Meta:
         model = Protocol
         fields = [
@@ -70,6 +70,14 @@ class CellsSearch(forms.Form):
     )
     database_to_search = models.CharField(max_length=30)
 
-
+# form for protocols search
+class ProtocolsSearch(forms.Form):
+    search = forms.CharField(
+        label="",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Search Database", "class": "form-control"}
+        ),
+    )
+    database_to_search = models.CharField(max_length=30)
 
 

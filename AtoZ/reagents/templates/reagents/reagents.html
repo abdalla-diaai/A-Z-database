@@ -2,19 +2,13 @@
 {% load static %}
 
 {% block body %}
-<form class="d-flex" action="{% url 'reagents_search' %}" method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-        {{ search_form }}
-    </div>
-    <button class="btn btn-primary" type="submit">Search</button>
-</form>
+
 <h2>All Reagents</h2>
 <a class="btn btn-secondary" href="{% url 'index' %}">Add New</a>
 
 {% if user.is_authenticated %}
 <div>
-    <table class="table">
+    <table id="table" class="table" id="table" data-toggle="table" data-search="true">
         <thead>
             <tr>
                 <th scope="col">#</th>

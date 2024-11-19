@@ -2,19 +2,13 @@
 {% load static %}
 
 {% block body %}
-<form class="d-flex" action="{% url 'reagents_search' %}" method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-        {{ search_form }}
-    </div>
-    <button class="btn btn-primary" type="submit">Search</button>
-</form>
+
 <h2>All Protocols</h2>
 <a class="btn btn-secondary" href="{% url 'index' %}">Add New</a>
 
 {% if user.is_authenticated %}
 <div>
-    <table class="table">
+    <table id="table" class="table" id="table" data-toggle="table" data-search="true">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -22,6 +16,8 @@
                 <th scope="col">Owner</th>
                 <th scope="col">Created At</th>
                 <th scope="col">View</th>
+                <th scope="col">Delete</th>
+
             </tr>
         </thead>
         <tbody>
@@ -31,7 +27,8 @@
                 <td>{{ protocol.title }}</td>
                 <td>{{ protocol.owner }}</td>
                 <td> {{ protocol.created }}</td>
-                <td>   <a href="{% url 'protocol' protocol.title %}">View</a> </td>
+                <td><a href="{% url 'protocol' protocol.title %}">View</a></td>
+                <td><a id="delete" href="{% url 'delete_protocol' protocol.id %}">X</a></td>
             </tr>
             {% endfor %}
         </tbody>

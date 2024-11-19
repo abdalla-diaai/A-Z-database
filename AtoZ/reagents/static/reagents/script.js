@@ -61,3 +61,9 @@ btnClick('phusion', phusionList);
 btnClick('toughmix', toughmixList);
 otherClick();
 });
+
+$(document).ready(function() {
+    $('#filter-table').bootstrapTable({
+        filterControl: true
+    });
+});

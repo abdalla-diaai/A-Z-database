@@ -3,18 +3,12 @@
 
 {% block body %}
 
-<form class="d-flex" action="{% url 'reagents_search' %}" method="POST">
-    {% csrf_token %}
-    <div class="form-group">
-        {{ search_form }}
-    </div>
-    <button class="btn btn-primary" type="submit">Search</button>
-</form>
+
 <h2>All Experiments</h2>
 <a class="btn btn-secondary" href="{% url 'index' %}">Add New</a>
 {% if user.is_authenticated %}
 <div>
-    <table class="table">
+    <table id="table" class="table" id="table" data-toggle="table" data-search="true">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -24,18 +18,17 @@
                 <th scope="col">Owner</th>
                 <th scope="col">Created At</th>
                 <th scope="col">View</th>
-
             </tr>
         </thead>
         <tbody>
             {% for experiment in page_obj %}
             <tr>
-                <th scope="row">{{ experiment.id }}</th>
+                <td>{{ experiment.id }}</td>
                 <td>{{ experiment.title }}</td>
                 <td>{{ experiment.objective }}</td>
                 <td>{{ experiment.summary }}</td>
                 <td>{{ experiment.owner }}</td>
-                <td> {{ experiment.created }}</td>
+                <td>{{ experiment.created }}</td>
                 <td><a id="view" href="{% url 'view_experiment' experiment.id %}">View</a></td>
             </tr>
             {% endfor %}

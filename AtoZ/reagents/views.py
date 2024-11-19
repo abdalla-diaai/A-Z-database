@@ -28,7 +28,7 @@ def index(request):
             "experiment_form": ExperimentForm(),
             "reagent_form": ReagentForm(),
             "cell_form": CellsForm(),
-            "protocol_form": UploadFile()
+            "protocol_form": UploadFile(),
         },
     )
 
@@ -211,46 +211,46 @@ def delete_cell(request, cell_id):
     cell.delete()
     return HttpResponseRedirect(reverse("view_cells"))
 
-@login_required
-def reagents_search(request):
-    """function to perform search to take the user to the page"""
-    reagents = Reagent.objects.all()
-    if request.method == "POST":
-        form = ReagentSearch(request.POST)
-        if form.is_valid():
-            search = form.cleaned_data["search"]
-            qset = Q()
-            for term in search.split():
-                qset = Q(reagent_name__contains=term)
+# @login_required
+# def reagents_search(request):
+#     """function to perform search to take the user to the page"""
+#     reagents = Reagent.objects.all()
+#     if request.method == "POST":
+#         form = ReagentSearch(request.POST)
+#         if form.is_valid():
+#             search = form.cleaned_data["search"]
+#             qset = Q()
+#             for term in search.split():
+#                 qset = Q(reagent_name__contains=term)
 
-            close_match = Reagent.objects.filter(qset)
-            for reagent in reagents:
-                if search.casefold() == reagent.reagent_name.casefold():
-                    messages.success(request, "Match Found!.")
+#             close_match = Reagent.objects.filter(qset)
+#             for reagent in reagents:
+#                 if search.casefold() == reagent.reagent_name.casefold():
+#                     messages.success(request, "Match Found!.")
 
-                    return render(
-                        request,
-                        "reagents/search.html",
-                        {
-                            "exact_match": reagent.reagent_name,
-                            "search_form": ReagentSearch(),
-                        },
-                    )
-            if close_match:
-                messages.success(request, "Match Found!.")
-                return render(
-                    request,
-                    "reagents/search.html",
-                    {"close_match": close_match, "search_form": ReagentSearch()},
-                )
-            else:
-                messages.success(request, "No results found.")
-                return render(
-                    request,
-                    "reagents/search.html",
-                    {"search_form": ReagentSearch()},
-                )
-    return render(request, "reagents/index.html", {"reagents": reagents})
+#                     return render(
+#                         request,
+#                         "reagents/search.html",
+#                         {
+#                             "exact_match": reagent.reagent_name,
+#                             "search_form": ReagentSearch(),
+#                         },
+#                     )
+#             if close_match:
+#                 messages.success(request, "Match Found!.")
+#                 return render(
+#                     request,
+#                     "reagents/search.html",
+#                     {"close_match": close_match, "search_form": ReagentSearch()},
+#                 )
+#             else:
+#                 messages.success(request, "No results found.")
+#                 return render(
+#                     request,
+#                     "reagents/search.html",
+#                     {"search_form": ReagentSearch()},
+#                 )
+#     return render(request, "reagents/index.html", {"reagents": reagents})
 
 
 def view_protocols(request):
@@ -278,46 +278,53 @@ def view_protocol(request, entry):
         {"entry_page": markdowner.convert(page), "title": entry},
     )
 
+# delete a reagent
 @login_required
-def cells_search(request):
-    """function to perform search to take the user to the page"""
-    cells = CellLine.objects.all()
-    if request.method == "POST":
-        form = CellsSearch(request.POST)
-        if form.is_valid():
-            search = form.cleaned_data["search"]
-            qset = Q()
-            for term in search.split():
-                qset = Q(cell_name__contains=term)
-  
-            close_match = CellLine.objects.filter(qset)
-            for cell in cells:
-                if search.casefold() == cell.cell_name.casefold():
-                    messages.success(request, "Match Found!.")
+def delete_protocol(request, protocol_id):
+    protocol = Protocol.objects.get(pk=protocol_id)
+    protocol.delete()
+    return HttpResponseRedirect(reverse("view_protocols"))
 
-                    return render(
-                        request,
-                        "reagents/search.html",
-                        {
-                            "exact_match": cell.cell_name,
-                            "search_form": CellsSearch(),
-                        },
-                    )
-            if close_match:
-                messages.success(request, "Match Found!.")
-                return render(
-                    request,
-                    "reagents/search.html",
-                    {"close_match": close_match, "search_form": CellsSearch()},
-                )
-            else:
-                messages.success(request, "No results found.")
-                return render(
-                    request,
-                    "reagents/search.html",
-                    {"search_form": CellsSearch()},
-                )
-    return render(request, "reagents/index.html", {"cells": cells})
+# @login_required
+# def cells_search(request):
+#     """function to perform search to take the user to the page"""
+#     cells = CellLine.objects.all()
+#     if request.method == "POST":
+#         form = CellsSearch(request.POST)
+#         if form.is_valid():
+#             search = form.cleaned_data["search"]
+#             qset = Q()
+#             for term in search.split():
+#                 qset = Q(cell_name__contains=term)
+  
+#             close_match = CellLine.objects.filter(qset)
+#             for cell in cells:
+#                 if search.casefold() == cell.cell_name.casefold():
+#                     messages.success(request, "Match Found!.")
+
+#                     return render(
+#                         request,
+#                         "reagents/search.html",
+#                         {
+#                             "exact_match": cell.cell_name,
+#                             "search_form": CellsSearch(),
+#                         },
+#                     )
+#             if close_match:
+#                 messages.success(request, "Match Found!.")
+#                 return render(
+#                     request,
+#                     "reagents/search.html",
+#                     {"close_match": close_match, "search_form": CellsSearch()},
+#                 )
+#             else:
+#                 messages.success(request, "No results found.")
+#                 return render(
+#                     request,
+#                     "reagents/search.html",
+#                     {"search_form": CellsSearch()},
+#                 )
+#     return render(request, "reagents/index.html", {"cells": cells})
 
 
 # upload protocol file 
@@ -349,3 +356,4 @@ def upload_protocol(request):
     else:
         form = UploadFile()
     return render(request, "reagents/index.html", {"form": form})
+
