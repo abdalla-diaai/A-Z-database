@@ -43,6 +43,8 @@
             {% for field in experiment_form %}
             <div class="form-group">
                 <div class="form-labels">{{ field.label }}</div>
+                {{ form.media }}
+
                 <div class="form-fields">{{ field }}</div>
             </div>
             {% endfor %}
