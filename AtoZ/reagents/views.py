@@ -17,8 +17,20 @@ import markdown2
 import mammoth
 import os
 import pyhtml2md
-import pypandoc
+#!/usr/bin/env python3
+from dotenv import load_dotenv
+from openai import OpenAI
+import os
+import pyaudio
+import wave
+import tempfile
+import time
 
+# Load the OpenAI API key from the .env file
+load_dotenv()
+openai_api_key = os.getenv("OPEN_AI_API_KEY")
+# Set up your OpenAI API client
+client = OpenAI(api_key=openai_api_key)
 
 def index(request):
     return render(
@@ -356,4 +368,55 @@ def upload_protocol(request):
     else:
         form = UploadFile()
     return render(request, "reagents/index.html", {"form": form})
+
+
+def record_audio(request, timed_recording=False, record_seconds=5):
+    temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    temp_file_name = temp_file.name
+
+    def callback(data_input, frame_count, time_info, status):
+        wav_file.writeframes(data_input)
+        return None, pyaudio.paContinue
+
+    with wave.open(temp_file_name, "wb") as wav_file:
+        wav_file.setnchannels(1)  # Mono channel
+        wav_file.setsampwidth(2)  # 16-bit samples
+        wav_file.setframerate(16000)  # 16kHz sample rate
+
+        audio = pyaudio.PyAudio()
+        stream = audio.open(
+            format=pyaudio.paInt16,
+            channels=1,
+            rate=16000,
+            input=True,
+            frames_per_buffer=1024,
+            stream_callback=callback,
+        )
+
+        if timed_recording:
+            print(f"Recording for {record_seconds} seconds...")
+            time.sleep(record_seconds)
+        else:
+            input("Press Enter to stop recording...")
+
+        stream.stop_stream()
+        stream.close()
+        audio.terminate()
+
+    with open(temp_file_name, "rb") as audio_file:
+        response = client.audio.transcriptions.create(
+            model="whisper-1", file=audio_file)
+
+
+        transcript = response.text.strip()
+        return render(
+        request,
+        "reagents/experiments.html",
+        {
+            "transcript": transcript,
+        },
+    )
+
+
+
 

@@ -22,5 +22,6 @@ urlpatterns = [
     path("view_protocol/<str:entry>", views.view_protocol, name="protocol"),
     path("upload_protocol", views.upload_protocol, name="upload_protocol"),
     path("delete_protocol/<int:protocol_id>", views.delete_protocol, name="delete_protocol"),
+    path("record_audio", views.record_audio, name="record_audio"),
 
 ]
