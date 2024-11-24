@@ -25,10 +25,13 @@ import pyaudio
 import wave
 import tempfile
 import time
+from pathlib import Path
 
+dotenv_path = Path('../../openai.env')
 # Load the OpenAI API key from the .env file
-load_dotenv()
+load_dotenv(dotenv_path=dotenv_path)
 openai_api_key = os.getenv("OPEN_AI_API_KEY")
+print(openai_api_key)
 # Set up your OpenAI API client
 client = OpenAI(api_key=openai_api_key)
 
