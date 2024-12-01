@@ -26,12 +26,14 @@ import wave
 import tempfile
 import time
 from pathlib import Path
+from pynput import mouse
 
 dotenv_path = Path('../../openai.env')
+
 # Load the OpenAI API key from the .env file
 load_dotenv(dotenv_path=dotenv_path)
 openai_api_key = os.getenv("OPEN_AI_API_KEY")
-print(openai_api_key)
+
 # Set up your OpenAI API client
 client = OpenAI(api_key=openai_api_key)
 
@@ -372,16 +374,20 @@ def upload_protocol(request):
         form = UploadFile()
     return render(request, "reagents/index.html", {"form": form})
 
+def record_audio(timed_recording=False, record_seconds=5):
+    # temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
+    # temp_file_name = temp_file.name
+    RATE = 16000
+    CHUNK = 1024
+    recordings = os.path.join(settings.MEDIA_ROOT, 'recordings') 
+    # Ensure the folder exists
+    if not os.path.exists(recordings):
+        os.makedirs('recordings')
+    
+    # Define the path to save the audio file
+    file_path = os.path.join(recordings, 'output.wav')
 
-def record_audio(request, timed_recording=False, record_seconds=5):
-    temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
-    temp_file_name = temp_file.name
-
-    def callback(data_input, frame_count, time_info, status):
-        wav_file.writeframes(data_input)
-        return None, pyaudio.paContinue
-
-    with wave.open(temp_file_name, "wb") as wav_file:
+    with wave.open(file_path, "wb") as wav_file:
         wav_file.setnchannels(1)  # Mono channel
         wav_file.setsampwidth(2)  # 16-bit samples
         wav_file.setframerate(16000)  # 16kHz sample rate
@@ -390,36 +396,28 @@ def record_audio(request, timed_recording=False, record_seconds=5):
         stream = audio.open(
             format=pyaudio.paInt16,
             channels=1,
-            rate=16000,
+            rate=RATE,
             input=True,
-            frames_per_buffer=1024,
-            stream_callback=callback,
+            frames_per_buffer=CHUNK,
         )
 
-        if timed_recording:
-            print(f"Recording for {record_seconds} seconds...")
-            time.sleep(record_seconds)
-        else:
-            input("Press Enter to stop recording...")
+        for _ in range(0, RATE // CHUNK * record_seconds):
+            wav_file.writeframes(stream.read(CHUNK))
 
         stream.stop_stream()
         stream.close()
         audio.terminate()
 
-    with open(temp_file_name, "rb") as audio_file:
-        response = client.audio.transcriptions.create(
-            model="whisper-1", file=audio_file)
+    return HttpResponseRedirect(reverse("view_experiments"))
 
 
-        transcript = response.text.strip()
-        return render(
-        request,
-        "reagents/experiments.html",
-        {
-            "transcript": transcript,
-        },
+
+def transcribe(request):
+    file_path = os.path.join(settings.MEDIA_ROOT, 'recordings', 'output.wav')  
+    audio_file= open(file_path, "rb")
+    transcription = client.audio.transcriptions.create(
+    model="whisper-1", 
+    file=audio_file
     )
-
-
-
-
+    print(transcription.text)
+    return HttpResponseRedirect(reverse("view_experiments"))

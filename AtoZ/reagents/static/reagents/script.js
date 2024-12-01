@@ -1,7 +1,9 @@
+
+
 function btnClick(polName, polList) {
     $(`#${polName}`).on('click', function () {
         $("#table-body").empty();
-        const rxNum = $('#tentacles').val();    
+        const rxNum = $('#tentacles').val();
         for (let i = 0; i < polList.length; i++) {
             let tableRow = $("<tr/>");
             tableRow.append($("<td>").text(i + 1));
@@ -22,7 +24,7 @@ function btnClick(polName, polList) {
 function otherClick() {
     $('#other').on('click', function () {
         $("#table-body").empty();
-        const rxNum = $('#tentacles').val();    
+        const rxNum = $('#tentacles').val();
         const other = $('#form-labels').val().split(',');
         let otherVol;
         for (let i = 0; i < other.length; i++) {
@@ -48,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ['Template DNA', 1],
         ['Water', 7]
     ]
-    
+
     const toughmixList = [
         ['Forward Primer', 0.75],
         ['Reverse Primer', 0.75],
@@ -57,13 +59,41 @@ document.addEventListener('DOMContentLoaded', () => {
         ['Water', 10]
     ]
 
-btnClick('phusion', phusionList);
-btnClick('toughmix', toughmixList);
-otherClick();
+    btnClick('phusion', phusionList);
+    btnClick('toughmix', toughmixList);
+    otherClick();
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     $('#filter-table').bootstrapTable({
         filterControl: true
     });
+});
+
+
+// Get the buttons from the DOM
+const recordButton = document.getElementById('record');
+const stopButton = document.getElementById('stop');
+
+// Start recording when the "Start Recording" button is clicked
+recordButton.addEventListener('click', async () => {
+    try {
+        const response = await fetch('/record_audio', { method: 'POST' });
+    } catch (error) {
+        console.error('Error starting recording:', error);
+    }
+});
+
+// Stop recording when the "Stop Recording" button is clicked
+stopButton.addEventListener('click', async () => {
+    try {
+        const response = await fetch('/stop-recording', { method: 'POST' });
+        const data = await response.json();
+        if (data.status === 'Recording stopped') {
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+        }
+    } catch (error) {
+        console.error('Error stopping recording:', error);
+    }
 });

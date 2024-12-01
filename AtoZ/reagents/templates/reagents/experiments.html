@@ -6,6 +6,9 @@
 
 <h2>All Experiments</h2>
 <a class="btn btn-secondary" href="{% url 'index' %}">Add New</a>
+<a class="btn btn-secondary" id="record" href="{% url 'record_audio' %}">Record</a>
+<a class="btn btn-secondary" href="{% url 'transcribe' %}">Transcribe</a>
+
 {% if user.is_authenticated %}
 <div>
     <table id="table" class="table" id="table" data-toggle="table" data-search="true">
