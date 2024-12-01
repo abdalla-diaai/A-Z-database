@@ -84,16 +84,3 @@ recordButton.addEventListener('click', async () => {
     }
 });
 
-// Stop recording when the "Stop Recording" button is clicked
-stopButton.addEventListener('click', async () => {
-    try {
-        const response = await fetch('/stop-recording', { method: 'POST' });
-        const data = await response.json();
-        if (data.status === 'Recording stopped') {
-            recordButton.disabled = false;
-            stopButton.disabled = true;
-        }
-    } catch (error) {
-        console.error('Error stopping recording:', error);
-    }
-});

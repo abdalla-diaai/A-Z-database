@@ -23,10 +23,8 @@ from openai import OpenAI
 import os
 import pyaudio
 import wave
-import tempfile
 import time
 from pathlib import Path
-from pynput import mouse
 
 dotenv_path = Path('../../openai.env')
 
@@ -374,9 +372,7 @@ def upload_protocol(request):
         form = UploadFile()
     return render(request, "reagents/index.html", {"form": form})
 
-def record_audio(timed_recording=False, record_seconds=5):
-    # temp_file = tempfile.NamedTemporaryFile(suffix=".wav", delete=False)
-    # temp_file_name = temp_file.name
+def record_audio(request, record_seconds=5):
     RATE = 16000
     CHUNK = 1024
     recordings = os.path.join(settings.MEDIA_ROOT, 'recordings') 
@@ -387,6 +383,10 @@ def record_audio(timed_recording=False, record_seconds=5):
     # Define the path to save the audio file
     file_path = os.path.join(recordings, 'output.wav')
 
+    # def callback(data_input, frame_count, time_info, status):
+    #     wav_file.writeframes(data_input)
+    #     return None, pyaudio.paContinue
+    
     with wave.open(file_path, "wb") as wav_file:
         wav_file.setnchannels(1)  # Mono channel
         wav_file.setsampwidth(2)  # 16-bit samples
@@ -408,12 +408,6 @@ def record_audio(timed_recording=False, record_seconds=5):
         stream.close()
         audio.terminate()
 
-    return HttpResponseRedirect(reverse("view_experiments"))
-
-
-
-def transcribe(request):
-    file_path = os.path.join(settings.MEDIA_ROOT, 'recordings', 'output.wav')  
     audio_file= open(file_path, "rb")
     transcription = client.audio.transcriptions.create(
     model="whisper-1", 
@@ -421,3 +415,5 @@ def transcribe(request):
     )
     print(transcription.text)
     return HttpResponseRedirect(reverse("view_experiments"))
+
+
